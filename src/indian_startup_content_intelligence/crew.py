@@ -22,18 +22,58 @@ from indian_startup_content_intelligence.tools.rss_collector import (
 )
 
 
-# Azure OpenAI deployment names. Override via env vars on AMP if your Azure
-# deployments are named differently. The provider is locked to "azure/" — the
-# litellm router uses AZURE_API_KEY / AZURE_API_BASE / AZURE_API_VERSION.
+# ---- Azure OpenAI env-var bridging ----
+# LiteLLM expects AZURE_API_KEY / AZURE_API_BASE / AZURE_API_VERSION,
+# but it delegates to the OpenAI Python SDK which looks for
+# AZURE_OPENAI_API_KEY / AZURE_OPENAI_ENDPOINT / AZURE_OPENAI_API_VERSION.
+# Mirror whichever set the user provided into both naming conventions so
+# auth works no matter which path the SDK takes internally.
+def _bridge_azure_env() -> None:
+    pairs = [
+        ("AZURE_API_KEY", "AZURE_OPENAI_API_KEY"),
+        ("AZURE_API_BASE", "AZURE_OPENAI_ENDPOINT"),
+        ("AZURE_API_VERSION", "AZURE_OPENAI_API_VERSION"),
+    ]
+    for litellm_name, openai_name in pairs:
+        litellm_val = os.getenv(litellm_name)
+        openai_val = os.getenv(openai_name)
+        if litellm_val and not openai_val:
+            os.environ[openai_name] = litellm_val
+        elif openai_val and not litellm_val:
+            os.environ[litellm_name] = openai_val
+
+
+_bridge_azure_env()
+
+
 _AZURE_GPT4O = os.getenv("AZURE_GPT4O_DEPLOYMENT", "gpt-4o")
 _AZURE_GPT4O_MINI = os.getenv("AZURE_GPT4O_MINI_DEPLOYMENT", "gpt-4o-mini")
 
 
 def _make_llm(deployment: str) -> LLM:
-    # Force LiteLLM routing — the "native" CrewAI Azure provider is Azure AI
-    # Inference (different service); for Azure OpenAI we want the LiteLLM
-    # azure/ prefix which uses AZURE_API_KEY / AZURE_API_BASE / AZURE_API_VERSION.
-    return LLM(model=f"azure/{deployment}", is_litellm=True)
+    """Build an Azure OpenAI LLM via LiteLLM, passing creds explicitly.
+
+    Passing api_key / api_base / api_version directly to the LLM constructor
+    avoids relying on LiteLLM's env-var lookup (which has been inconsistent
+    between LiteLLM versions and the underlying OpenAI SDK). _bridge_azure_env
+    is still called at import time as a belt-and-suspenders measure.
+    """
+    api_key = os.getenv("AZURE_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
+    api_base = os.getenv("AZURE_API_BASE") or os.getenv("AZURE_OPENAI_ENDPOINT")
+    api_version = (
+        os.getenv("AZURE_API_VERSION")
+        or os.getenv("AZURE_OPENAI_API_VERSION")
+        or "2024-08-01-preview"
+    )
+
+    kwargs = {"model": f"azure/{deployment}", "is_litellm": True}
+    if api_key:
+        kwargs["api_key"] = api_key
+    if api_base:
+        kwargs["api_base"] = api_base
+    if api_version:
+        kwargs["api_version"] = api_version
+    return LLM(**kwargs)
 
 
 @CrewBase
