@@ -211,7 +211,7 @@ generate_schema_compliant_instagram_briefs:
 
 generate_professional_word_ready_documents:
   description: |-
-    Convert the structured Instagram briefs (InstagramBriefBatch) from the previous task into a single, polished HTML document.
+    Convert the structured Instagram briefs (InstagramBriefBatch) from the previous task into a beautifully formatted markdown preview with an embedded clickable link to the fully-styled HTML version.
 
     **Procedure (do not deviate):**
     1. Read the InstagramBriefBatch produced by the previous task from context.
@@ -221,12 +221,13 @@ generate_professional_word_ready_documents:
 
     **Hard rules:**
     - Do NOT modify, summarize, or comment on the tool's output.
-    - Do NOT wrap the HTML in markdown code fences.
-    - Do NOT add a preamble like "Here is the HTML:".
-    - The tool's output is already a complete, professionally styled HTML document — your job is purely to invoke the tool and return its result.
-  expected_output: A single complete HTML document starting with `<!DOCTYPE html>`
-    and ending with `</html>`, returned exactly as produced by the
-    `instagram_brief_renderer` tool, with no surrounding text or formatting.
+    - Do NOT wrap the output in code fences.
+    - Do NOT add a preamble like "Here is the document:".
+    - The tool's output begins with a clickable HTML link banner followed by rich markdown — both are intentional. The CrewAI dashboard renders this inline.
+  expected_output: A markdown document beginning with a banner link to the styled
+    HTML version (`> 🔗 **[Click here...](data:text/html;base64,...)**`), followed
+    by `# Instagram Content Briefs ...` and the rich-markdown rendering of all
+    briefs. Returned verbatim from the `instagram_brief_renderer` tool.
   agent: document_generation_specialist
   context:
   - generate_schema_compliant_instagram_briefs

@@ -50,13 +50,16 @@ _AZURE_GPT4O = os.getenv("AZURE_GPT4O_DEPLOYMENT", "gpt-4o")
 _AZURE_GPT4O_MINI = os.getenv("AZURE_GPT4O_MINI_DEPLOYMENT", "gpt-4o-mini")
 
 
-def _make_llm(deployment: str) -> LLM:
+def _make_llm(deployment: str, max_tokens: int | None = None) -> LLM:
     """Build an Azure OpenAI LLM via LiteLLM, passing creds explicitly.
 
     Passing api_key / api_base / api_version directly to the LLM constructor
     avoids relying on LiteLLM's env-var lookup (which has been inconsistent
     between LiteLLM versions and the underlying OpenAI SDK). _bridge_azure_env
     is still called at import time as a belt-and-suspenders measure.
+
+    `max_tokens` is needed for the brief generator (large structured output);
+    when None, the provider default applies (typically ~4096 for Azure).
     """
     api_key = os.getenv("AZURE_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
     api_base = os.getenv("AZURE_API_BASE") or os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -73,6 +76,8 @@ def _make_llm(deployment: str) -> LLM:
         kwargs["api_base"] = api_base
     if api_version:
         kwargs["api_version"] = api_version
+    if max_tokens:
+        kwargs["max_tokens"] = max_tokens
     return LLM(**kwargs)
 
 
@@ -133,7 +138,9 @@ class IndianStartupContentIntelligenceCrew:
     def senior_creative_director_for_instagram_b2b_content___schema_compliant(self) -> Agent:
         return Agent(
             config=self.agents_config["senior_creative_director_for_instagram_b2b_content___schema_compliant"],  # type: ignore[index]
-            llm=_make_llm(_AZURE_GPT4O),
+            # 12000 max_tokens — the structured brief output is large
+            # (3 briefs × ~14 fields each); default 4096 caused truncation.
+            llm=_make_llm(_AZURE_GPT4O, max_tokens=12000),
         )
 
     @agent

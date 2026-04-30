@@ -3,11 +3,16 @@
 Every task uses one of these as `output_pydantic`. This forces the LLM into
 structured-output mode and validates every handoff so a single bad response
 can't corrupt the rest of the pipeline.
+
+Schema-design note (2026-04-30): the previous InstagramBrief had 25+ fields
+which routinely caused the LLM to truncate at 2-of-3 briefs and miss required
+fields. Slimmed to ~14 fields with denser composite text fields where it makes
+sense. 3 briefs now fit comfortably in a single generation.
 """
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 # ---------- Task 1: collect_indian_startup_content ----------
@@ -94,7 +99,7 @@ class FormatRecommendationBatch(BaseModel):
     recommendations: list[FormatRecommendation]
 
 
-# ---------- Task 5: generate_schema_compliant_instagram_briefs ----------
+# ---------- Task 5: generate_schema_compliant_instagram_briefs (slimmed) ----------
 
 PrimaryGoal = Literal[
     "awareness", "engagement", "saves", "shares", "follows", "leads"
@@ -102,197 +107,102 @@ PrimaryGoal = Literal[
 
 
 class SourceCitation(BaseModel):
-    """A real upstream RawItem url the brief draws from. URLs MUST come from the cluster."""
+    """A real upstream URL the brief draws from. URLs MUST come from the cluster."""
 
     title: str
     url: str
     source: str
-    relevance_note: str = Field(
-        description="One sentence on what specifically this source contributes to the brief."
-    )
+
+    @field_validator("url")
+    @classmethod
+    def reject_placeholder_urls(cls, v: str) -> str:
+        bad_hosts = ("example.com", "example.org", "example.net", "test.com")
+        if any(host in v.lower() for host in bad_hosts):
+            raise ValueError(
+                f"URL {v!r} is a placeholder. Use a real URL from the upstream RawItem cluster."
+            )
+        if not v.startswith(("http://", "https://")):
+            raise ValueError(f"URL {v!r} must include a scheme (http:// or https://).")
+        return v
 
 
 class HookOption(BaseModel):
-    """One of three hook drafts. The agent picks the best at production time."""
-
     label: Literal["A", "B", "C"]
-    angle: str = Field(
-        description=(
-            "The psychological angle. e.g. 'specific number', 'contrarian', "
-            "'insider language', 'named brand', 'pattern recognition', 'question'."
-        )
-    )
+    angle: str = Field(description="Psychological angle. e.g. 'specific number', 'contrarian', 'insider language'.")
     text: str = Field(description="The hook itself, ≤15 words.")
-    character_count: int
-    why_it_works: str = Field(
-        description="1-2 sentences on the format mechanics — why this hook drives the primary metric."
-    )
+    why_it_works: str = Field(description="1 sentence on why it drives the format's primary metric.")
 
 
 class SlideOrShot(BaseModel):
-    """One slide of a carousel, or one shot of a reel. Mix as appropriate."""
+    """One slide of a carousel, or one frame of a story. Mix as appropriate."""
 
     sequence_number: int = Field(ge=1)
-    timestamp_or_slide: str = Field(
-        description='Reel: "0:00-0:03". Carousel: "Slide 1". Story: "Frame 1".'
-    )
-    visual_concept: str = Field(
-        description="Composition, B-roll, key imagery. What's literally on screen."
-    )
-    headline: str = Field(
-        description="Large on-screen text or slide headline. ≤8 words for carousel."
-    )
-    body_copy: str = Field(
-        description="Smaller body text on the slide, or '' for reel shots without body copy."
-    )
+    label: str = Field(description='"Slide 1" / "Frame 1" / "Slide 5" — match the format.')
+    visual_concept: str = Field(description="What's literally on screen. Composition, B-roll, key imagery.")
+    headline: str = Field(description="Big on-screen text. Carousel: ≤8 words. Story sticker: ≤6 words.")
     voiceover: str = Field(
-        description="Literal spoken words for video shots. '' for static carousel slides."
-    )
-    design_notes: str = Field(
-        description="Specific design: colors, typography weight, layout grid, motion notes."
-    )
-
-
-class HashtagTier(BaseModel):
-    tier: Literal["broad", "niche", "branded"]
-    tags: list[str] = Field(
-        min_length=1,
-        description="Hashtags WITHOUT the # prefix. e.g. ['indianstartups', 'saas'].",
-    )
-    rationale: str = Field(
-        description="Why these tags at this tier — reach vs. relevance trade-off."
-    )
-
-
-class CaptionDraft(BaseModel):
-    label: Literal["primary", "alt_1", "alt_2"]
-    full_text: str = Field(
-        description="The complete caption. Use \\n for line breaks."
-    )
-    first_line_hook: str = Field(
         description=(
-            "The opening line that shows above Instagram's 'Read More' fold. "
-            "Should be a strong standalone hook."
+            "STORY: required, conversational founder-to-founder voice, MUST DIFFER from headline. "
+            "CAROUSEL: typically empty string."
         )
     )
-    word_count: int
+    design_notes: str = Field(description="Hex colors, typography weight, layout grid, motion notes.")
 
 
 class InstagramBrief(BaseModel):
-    """A production-ready, schema-compliant Instagram brief.
+    """A production-ready Instagram brief. ~14 fields, slim by design.
 
-    Every field is required. Source URLs MUST come from the upstream
-    RawItem/RankedTopic cluster — never invent URLs.
+    Source URLs MUST come from the upstream RankedTopic.items cluster.
     """
 
-    # ---- Strategic frame ----
-    topic_line: str = Field(description="Topic restated in one line.")
-    one_line_thesis: str = Field(
-        description=(
-            "The single-sentence reason this content exists. The 'so what'. "
-            "Sharp, specific, no fluff."
-        )
-    )
+    # ---- Strategic frame (compact) ----
+    topic_line: str = Field(description="The topic restated in one tight line.")
+    thesis: str = Field(description="Single-sentence reason this content exists. Sharp, specific, no fluff.")
     target_subaudience: str = Field(
-        description=(
-            "Who specifically inside the broader 'Indian early-stage founder' "
-            "umbrella this is for. e.g. 'Pre-seed B2B SaaS founders in years 1-2 "
-            "navigating their first cap table.'"
-        )
+        description="Specific founder subsegment. e.g. 'Pre-seed B2B SaaS founders negotiating their first cap table.'"
     )
-    why_now: str = Field(
-        description=(
-            "What makes this timely THIS WEEK — a regulatory change, a high-profile "
-            "fundraise, a market shift mentioned in the source articles."
-        )
-    )
-    primary_goal: PrimaryGoal
+    why_now: str = Field(description="What makes this timely THIS WEEK. Cite the source date if known.")
 
-    # ---- Format & specs ----
+    # ---- Format ----
     format: InstagramFormat
-    header: str = Field(
-        description="'Content Brief — Instagram <Format> | Goal: <Goal> | Audience: <Audience>'"
-    )
-    specs: str = Field(
-        description=(
-            "Pipe-separated. e.g. 'Duration: 30-45s | Aspect Ratio: 9:16 | "
-            "Hook: 0-3s | Hashtag Count: 5'"
-        )
-    )
+    primary_goal: PrimaryGoal = Field(description="Always 'awareness' for this crew.")
+    specs: str = Field(description="Pipe-separated. Carousel: '8-10 slides | 4:5 | Slide 1 hook | 5 hashtags'. Story: '4 frames × 15s | 9:16 | Frame 1 hook | 1-2 hashtags'.")
 
-    # ---- Fact-check & sourcing ----
-    fact_check_status: Literal["Verified", "Evergreen", "Unverified"]
-    fact_check_note: str
+    # ---- Fact-check + sources ----
+    fact_check: str = Field(description="One of 'Verified', 'Evergreen', 'Unverified', followed by ' — ' and a one-sentence note.")
     source_citations: list[SourceCitation] = Field(
         min_length=1,
-        description=(
-            "At least one real source URL drawn from the upstream cluster. "
-            "NEVER invent URLs. If the cluster has only one item, cite that one."
-        ),
+        max_length=4,
+        description="Real URLs from the upstream cluster. NEVER invent. NEVER use example.com.",
     )
 
     # ---- The brief proper ----
     hooks: list[HookOption] = Field(min_length=3, max_length=3)
-    slides_or_shots: list[SlideOrShot] = Field(min_length=3)
-    captions: list[CaptionDraft] = Field(
-        min_length=2,
-        max_length=3,
-        description="At least 2 caption drafts: a primary plus 1-2 alts.",
+    slides_or_shots: list[SlideOrShot] = Field(min_length=3, max_length=10)
+    caption: str = Field(
+        description="80-180 word primary caption. Line breaks for readability. First line survives the Read More cut."
     )
-    hashtag_tiers: list[HashtagTier] = Field(
-        min_length=2,
-        description="At least 2 tiers (broad + niche). Branded tier optional.",
+    hashtags: list[str] = Field(
+        min_length=3,
+        max_length=7,
+        description="Without # prefix. Mix broad + niche.",
     )
 
-    # ---- CTA playbook (multiple options for different goals) ----
-    primary_cta: str = Field(description="The CTA matched to the primary goal.")
-    save_cta: str = Field(description="Variant for save-driven posts.")
-    share_cta: str = Field(description="Variant for share-driven posts.")
-    follow_cta: str = Field(description="Variant for follow-driven posts.")
-    comment_cta: str = Field(description="Variant for comment-driven posts.")
+    # ---- CTA + production ----
+    primary_cta: str = Field(description="The CTA matched to the primary_goal.")
+    comment_cta: str = Field(description="A variant designed to provoke comments (great for stories).")
 
-    # ---- Audio & visual identity ----
+    # ---- Distribution (combined) ----
     audio_recommendation: str = Field(
-        description=(
-            "For reels: trending audio name, mood, tempo, why it fits. "
-            "For static/carousel: 'No audio' or 'Original audio' with note."
-        )
+        description="STORY: real trending sound name + BPM + mood, OR 'Original audio with voiceover'. CAROUSEL: 'No audio'."
     )
-    visual_design_notes: str = Field(
+    distribution_notes: str = Field(
         description=(
-            "Brand-level: color palette (with hex codes), typography pairing, "
-            "layout grid, recurring visual motif."
-        )
-    )
-
-    # ---- Production & launch ----
-    posting_strategy: str = Field(
-        description=(
-            "Best time IST, best day(s), posting frequency for this pillar, "
-            "story tease plan if applicable."
-        )
-    )
-    engagement_playbook: str = Field(
-        description=(
-            "Specific moves for the first 60 minutes after posting: pinned-comment "
-            "copy, reply themes, follow-up post idea."
-        )
-    )
-
-    # ---- Multipliers ----
-    cross_platform_adaptation: str = Field(
-        description=(
-            "How to repurpose this brief: LinkedIn carousel/post text, X thread "
-            "first tweet, YouTube Shorts hook. Concrete drafts."
-        )
-    )
-    success_criteria: str = Field(
-        description=(
-            "What success looks like in plain language: target saves rate, watch "
-            "time, reach band. Numbers grounded in the format mechanics."
+            "Combined posting + engagement strategy. Cover: best time IST, best day, "
+            "first-60-min engagement plan, follow-up post idea. 3-6 lines."
         )
     )
 
 
 class InstagramBriefBatch(BaseModel):
-    briefs: list[InstagramBrief] = Field(min_length=3)
+    briefs: list[InstagramBrief] = Field(min_length=3, max_length=3)
