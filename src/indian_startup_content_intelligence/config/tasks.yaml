@@ -85,41 +85,43 @@ validate_and_rank:
 
 choose_format:
   description: |-
-    Of the 3 ranked topics, assign formats with this MANDATORY mix: **exactly 1 carousel + exactly 2 stories.** No reels, no static, no deviation.
+    Of the 3 ranked topics, assign formats with this MANDATORY mix: **exactly 1 carousel + exactly 2 reels in narrative progression.** No stories, no static.
 
     **Carousel pick (1 topic):**
     - Identify which one of the 3 topics has the most TACTICAL, framework, multi-step, or step-by-step content. That's your carousel topic.
     - Carousels drive saves; saves drive algorithmic reach. Set expected_primary_metric = "saves".
+    - rubric_match must start with "Carousel — " followed by the rubric category that applies.
 
-    **Story picks (the remaining 2 topics):**
-    - The other two become stories. Stories drive comments + DMs + quick engagement.
-    - Set expected_primary_metric = "comments" for both.
+    **Reel pair (the remaining 2 topics, in narrative progression):**
+    - The other two become reels. Order them so a clear arc connects them:
+      * **Part 1 (Setup)** — surfaces the tension, names the dilemma, plants the question, ends with explicit Part-2 teaser.
+      * **Part 2 (Payoff)** — opens with "Yesterday I asked..." callback, delivers the framework / numbers / contrarian take.
+    - The two topics should share a thread (same audience pain, same domain, or same protagonist company). If they don't naturally pair, order them so Part 1 = broader/setup and Part 2 = sharper/payoff.
+    - Both reels: expected_primary_metric = "watch_time".
+    - rubric_match for the two reels must be exactly "Reel — Part 1 (Setup)" and exactly "Reel — Part 2 (Payoff)".
+    - The `reasoning` field for each reel MUST state the narrative bridge: "Part 1 raises X; Part 2 answers it with Y."
 
-    **Rubric for the carousel (cite which one applies):**
+    **Rubric for the carousel (cite which one applies in rubric_match):**
     - Tactical content (frameworks, checklists, playbooks)
     - Tutorial / how-to with visual density
     - Multi-step decision framework
     - Detailed breakdown of an Indian co's strategy
 
-    **Rubric for the 2 stories:**
-    - Single contrarian statistic or hot take
-    - Debate / dilemma content (bootstrap vs raise, India-first vs global, ESOP %)
-    - News commentary requiring speed
-    - Quick-frame opinion or "X companies did Y this week" pattern
-
-    **Hard rules:**
-    1. Output exactly 3 FormatRecommendations: 1 with format="carousel", 2 with format="story".
-    2. Each recommendation cites which rubric category the topic fits.
-    3. expected_primary_metric must match: carousel→saves, story→comments.
+    **HARD RULES:**
+    1. Output exactly 3 FormatRecommendations: 1 with format="carousel", 2 with format="reel".
+    2. expected_primary_metric: carousel→"saves", reel→"watch_time" (both reels).
+    3. rubric_match strings must follow the patterns above ("Carousel — <category>", "Reel — Part 1 (Setup)", "Reel — Part 2 (Payoff)") — the brief generator reads these to know which reel is which.
+    4. Reasoning for the reels must explicitly bridge Part 1 → Part 2.
   expected_output: A FormatRecommendationBatch with exactly 3 recommendations —
-    one carousel (saves) and two stories (comments) — each citing its rubric match.
+    one carousel (saves) and two reels in narrative progression (watch_time), each
+    citing its rubric match and the reels naming their narrative bridge.
   agent: instagram_content_format_specialist_for_b2b_founder_audiences
   context:
   - validate_and_rank
 
 generate_schema_compliant_instagram_briefs:
   description: |-
-    Produce EXACTLY 3 Instagram briefs (1 carousel + 2 stories per the format strategist's assignments) for Indian early-stage SaaS/B2B founders. Output is **MARKDOWN TEXT** following the template below — NOT JSON. Persona is locked: awareness-driven content for the page's growth from 500K to 1M followers.
+    Produce EXACTLY 3 Instagram briefs for Indian early-stage SaaS/B2B founders, with the format mix the strategist assigned: 1 carousel + 2 reels in progression (the strategist labels each reel "Reel — Part 1 (Setup)" or "Reel — Part 2 (Payoff)" in rubric_match — read it). Output is **MARKDOWN TEXT** following the template below — NOT JSON. The markdown IS the final deliverable: it renders directly on the CrewAI dashboard. Persona is locked: awareness-driven content for the page's growth from 500K to 1M followers in 6 months.
 
     **Source-grounding rule (most important):** Every URL you cite MUST come from the upstream RankedTopic.items list. Copy URLs character-for-character. NEVER invent URLs. NEVER use example.com.
 
@@ -132,83 +134,107 @@ generate_schema_compliant_instagram_briefs:
 
     **Audience:** <specific subaudience, e.g. "Pre-seed B2B SaaS founders negotiating their first cap table">
     **Why now:** <what makes this timely THIS WEEK; cite the source date>
-    **Format:** <carousel|story>
-    **Specs:** <e.g. "8-10 slides | 4:5 | Slide 1 hook | 5 hashtags" or "4 frames × 15s | 9:16 | Frame 1 hook | 1-2 hashtags">
-    **Fact-check:** <Verified|Evergreen|Unverified> — <one-sentence note>
+    **Format:** <Carousel | Reel — Part 1 (Setup) | Reel — Part 2 (Payoff)>
+    **Specs:** <e.g. "8-10 slides | 4:5 | Slide 1 hook | 5 hashtags" or "5-7 shots × 30-45s total | 9:16 | Hook in first 1.5s | DM trigger in final shot">
+    **Fact-check:** <Verified | Evergreen | Unverified> — <one-sentence note>
 
-    ### 📚 Sources
+    ### Sources
     - [<title>](<url>) — <source name>
     - [<title>](<url>) — <source name>
 
-    ### 🎣 Hooks
-    **A · <angle, e.g. "specific number">** — <hook text, ≤15 words>
+    ### Hooks
+    **A · Specific number / loss-aversion** — <hook text, ≤15 words>
+      _Why it works: <1 sentence tagged to format's primary metric>_
+    **B · Contrarian-but-defensible** — <hook text>
       _Why it works: <1 sentence>_
-    **B · <angle>** — <hook text>
-      _Why it works: <1 sentence>_
-    **C · <angle>** — <hook text>
+    **C · Insider language / pattern recognition** — <hook text>
       _Why it works: <1 sentence>_
 
-    ### 🎬 Slide / Shot Blueprint
-    | # | Slide / Frame | Visual + Design | Headline | Voiceover |
-    |---|---|---|---|---|
-    | 1 | Slide 1 | <visual concept; design: hex colors, typography, layout> | <≤8 words> | <empty for carousel; required + ≠ headline for story> |
-    | 2 | Slide 2 | ... | ... | ... |
-    | 3 | Slide 3 | ... | ... | ... |
+    ### Slide / Shot Blueprint
+    | # | Slide / Shot | Visual + Design | Headline / On-screen | Voiceover | Transition |
+    |---|---|---|---|---|---|
+    | 1 | <Slide 1 / Shot 1> | <visual concept; design: hex colors, typography, layout> | <≤8 words carousel; ≤6 words reel sticker> | <empty for carousel; required + ≠ headline for reel> | <cut / whip / match-cut / N/A for carousel> |
+    | 2 | ... | ... | ... | ... | ... |
 
-    For CAROUSEL: 5-10 slides, slide 1 = hook, slide N = CTA + summary, voiceover column usually empty.
-    For STORY: 3-5 frames × 15s, frame 1 = hook + interactive sticker (poll/question), final frame = CTA + DM trigger. **Voiceover MUST be different from headline** — punchy, conversational, founder-to-founder; the headline is the on-screen sticker (≤6 words), voiceover is the narrative + emotion (1-3 sentences).
+    For CAROUSEL: 8-10 slides. Slide 1 = hook, Slide 2 = stakes, Slides 3-N = framework (one step per slide), final slide = summary + Follow CTA. Voiceover column usually empty.
+    For REEL: 5-7 shots, 30-45s total, 9:16. Shot 1 = visual hook in <1.5s. Final shot = CTA + DM trigger. **Voiceover MUST differ from on-screen text** (sticker is ≤6 words; voiceover is 1-3 conversational sentences, founder-to-founder, ending each shot with a tease that pulls to the next).
+    For REEL — PART 1 (SETUP): plant the question, surface the tension, end with a teaser explicitly previewing Part 2 ("Tomorrow: the 3 numbers that decide it.").
+    For REEL — PART 2 (PAYOFF): open with "Yesterday I asked..." callback, then deliver the framework / numbers / contrarian take. Reference Part 1 in the caption.
 
-    ### ✏️ Caption
-    > <80-180 word primary caption with line breaks; first line survives Instagram's "Read More" cut>
+    ### Captions (3 drafts)
 
-    ### # Hashtags
-    `#tag1` `#tag2` `#tag3` `#tag4` `#tag5`
+    **Long (140-180 words):**
+    > <story-led primary caption with line breaks every 1-2 sentences; first line survives Instagram's "Read More" cut at ~125 chars>
 
-    ### 📣 CTAs
-    - **Primary:** <CTA matched to awareness goal>
-    - **Comment-driver:** <CTA designed to provoke comments — especially for stories>
+    **Medium (60-90 words):**
+    > <punchier, framework-led; no story setup; A/B alternative or cross-platform variant>
 
-    ### 🎵 Audio
-    <For stories: real trending sound name + BPM + mood. For carousel: "No audio" with note on Story-tease plan.>
+    **Short (≤30 words):**
+    > <pure hook + CTA; for reels where the video carries the message>
 
-    ### 📅 Distribution & Engagement
-    <3-6 lines covering: best time IST, best day, first-60-min engagement plan (pinned comment copy, reply themes), follow-up post idea.>
+    ### Hashtags (tiered, 5-7 total, no #)
+    - **Broad (1-2):** <e.g. IndianStartups, SaaS>
+    - **Niche (2-3):** <e.g. IndianSaaS, B2BSaaSIndia, BangaloreFounders>
+    - **Community / branded (1):** <branded tag or FoundersOfIndia>
+    - **Trend (0-1):** <only if a trending tag legitimately matches; else omit>
+
+    ### CTAs
+    - **Primary:** <matched to format's primary metric — Save / Watch Again / Share with co-founder>
+    - **Comment-driver:** <specific low-friction question, e.g. "Which one are you most guilty of? 1, 2, or 3?">
+    - **DM-trigger:** <reel only — e.g. "DM 'CAP' for the cap-table template">
+    - **Follow:** <used in pinned comment + final slide/shot, e.g. "Follow for daily breakdowns of Indian early-stage playbooks">
+
+    ### Audio
+    <Reel: trending sound name + BPM + mood + a fallback. Carousel: "No audio (silent IG carousel)" + Story-tease audio note.>
+
+    ### Posting Strategy
+    - **Day + time (IST):** <e.g. Tue 9:00 AM IST — founders pre-stand-up; justify from topic if applicable>
+    - **Cross-promo:** <Story tease 2-4 hours before; what the tease shows>
+    - **Sequencing:** <for the reel pair — Part 1 publishes 24h before Part 2; Part 2 caption opens with "Yesterday I asked..." callback>
+
+    ### Engagement Playbook (first 60 minutes)
+    - **Pinned comment (verbatim, ≤200 chars):** <framework summary + DM trigger>
+    - **Prepared reply lines (3):**
+      1. Agreement amplifier — <line>
+      2. Gentle disagreement — <line>
+      3. Follow-up question to extend the thread — <line>
+    - **Outbound engagement (3 accounts to comment on within 30 min):** <named accounts in niche>
+    - **Story amplifier (30 min after feed post):** <slide concept + poll/question sticker>
+    - **Follow-up post idea (tomorrow's queue):** <the natural next post extending this topic>
 
     ---
     ```
 
+    **NORTH STAR — what these briefs are optimised for:**
+
+    The KPI is page growth from 500K → 1M followers in 6 months. The two compounding signals are AWARENESS (reach to non-followers via Explore + recommended feeds) and LIKES (the dominant low-friction signal Instagram's algorithm reads to push posts to more non-follower feeds). Every line of every brief must pass at least one of:
+    (1) Earns a LIKE in under 3 seconds — via a quotable line, visual punch, or stab-of-recognition insight a founder taps to validate.
+    (2) Earns a SAVE — via a tactical framework, numeric breakdown, or checklist worth keeping.
+    (3) Earns a SHARE — via a contrarian-and-defensible take a founder forwards to a co-founder, investor, or hiring manager.
+    Lines that earn none of these are wasted impressions. Cut them or rewrite — never pad to length.
+
+    **SUBSTANCE FLOOR — minimums every brief MUST clear (no exceptions):**
+    - **Carousel:** at least 8 slides (target 9-10). Every slide carries a distinct insight, step, or stat. No filler / transition slides.
+    - **Reel:** at least 5 shots (target 6-7). Every shot is a distinct beat (question, twist, evidence, framework, payoff). Hook in <1.5s. Final shot = CTA + DM trigger.
+    - **All 3 caption drafts** present and complete: long (140-180w), medium (60-90w), short (≤30w). No skipping. Long caption's first line survives the "Read More" cut at ~125 chars.
+    - **Specificity floor per brief:** ≥ 3 named Indian companies, ≥ 2 specific ₹ amounts or percentages, ≥ 1 named framework / playbook / role / named person.
+    - **All 5 engagement-playbook components** filled with concrete specifics (pinned comment verbatim + 3 prepared reply lines + 3 named outbound accounts + Story amplifier slide + follow-up post idea).
+    - **All 3 hook angles** filled (specific-number, contrarian-defensible, insider-language) with their own one-sentence why-it-works.
+    - **All 4 CTAs** filled: primary, comment-driver, DM-trigger, follow.
+    - **At least 1 real upstream URL** per brief; preferably 2-3 from the cluster.
+
     **HARD RULES:**
-    - Output exactly 3 brief blocks (1 carousel + 2 stories) using this template.
-    - Every URL must come from the upstream cluster — never invent.
-    - Specific over vague: ₹ amounts, named Indian cos (Razorpay, Postman, Zoho, BharatPe etc.), real numbers from sources.
-    - For stories: every voiceover must differ from its headline.
-    - Zero motivational filler ("hustle", "grind", "rise and shine").
-    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
+    - Output exactly 3 brief blocks: 1 carousel + 2 reels (Part 1 then Part 2). Read each FormatRecommendation.format and rubric_match to know which is which.
+    - Every URL must come from the upstream cluster — never invent. If sources are thin, mark fact_check as Evergreen and frame the brief as a pattern.
+    - Specific over vague: ₹ amounts, named Indian cos (Razorpay, Postman, Zoho, BharatPe, Freshworks, Smallcase, Cred, Slice, Yellow.ai, Atlan, Chargebee, Khatabook, OfBusiness, Apna, Whatfix, MoEngage, etc.), real numbers from sources.
+    - For reels: every voiceover line must differ from its on-screen sticker text.
+    - For the 2-reel progression: Part 1 explicitly teases Part 2 (final shot teaser); Part 2 explicitly callbacks Part 1 (opening voiceover + caption).
+    - Zero motivational filler ("hustle", "grind", "rise and shine", "trust the process").
+    - Every line passes the like-save-share test, or it gets cut.
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output. The markdown IS the final deliverable.
   expected_output: |-
-    A markdown document containing exactly 3 brief blocks (1 carousel + 2 stories) following the template — Brief 1, Brief 2, Brief 3 each with thesis, audience, why-now, format/specs, fact-check, sources, hooks, slide/shot table, caption, hashtags, CTAs, audio, and distribution. All URLs traced to upstream cluster. Story voiceovers punchy and different from on-screen headlines.
+    A markdown document containing exactly 3 brief blocks following the template — Brief 1 (Carousel), Brief 2 (Reel — Part 1 Setup), Brief 3 (Reel — Part 2 Payoff), each with: thesis, audience, why-now, format/specs, fact-check, sources, 3 hooks with reasoning, slide/shot blueprint table, three caption drafts (long/medium/short), tiered hashtags, multi-CTA stack (primary/comment/DM/follow), audio, posting strategy, and a 5-part engagement playbook (pinned comment, 3 prepared replies, outbound engagement, Story amplifier, follow-up post idea). All URLs traced to upstream cluster. Reel voiceovers punchy and different from on-screen stickers. Part 1 sets up + Part 2 pays off, with explicit cross-references between them.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
   - choose_format
-
-generate_professional_word_ready_documents:
-  description: |-
-    Take the markdown briefs from the previous task and publish them as a styled, shareable webpage.
-
-    **Procedure (one tool call only):**
-    1. Take the entire markdown output from the previous brief generator task verbatim.
-    2. Call `instagram_brief_renderer` exactly once, passing that markdown as `briefs_markdown`.
-    3. Return the tool's output VERBATIM as your final answer.
-
-    **Hard rules:**
-    - Do NOT modify, summarize, or comment on the tool's output.
-    - Do NOT wrap the output in code fences.
-    - Do NOT add a preamble like "Here is the document:".
-    - The tool returns a banner with a clickable shareable URL followed by the markdown — both intentional.
-  expected_output: A markdown document beginning with a banner link to a public
-    catbox.moe URL (`# 🔗 [📄 View the polished briefs document](https://files.catbox.moe/...)`)
-    followed by the markdown briefs. Returned verbatim from the
-    `instagram_brief_renderer` tool.
-  agent: document_generation_specialist
-  context:
-  - generate_schema_compliant_instagram_briefs

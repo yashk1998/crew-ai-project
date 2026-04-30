@@ -1,22 +1,15 @@
 import os
-from pathlib import Path
 
 from crewai import LLM, Agent, Crew, Process, Task
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from crewai.project import CrewBase, after_kickoff, agent, crew, task
+from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import FileReadTool, TavilySearchTool
 
 from indian_startup_content_intelligence.models import (
     FormatRecommendationBatch,
-    InstagramBriefBatch,
     RankedTopicBatch,
     RawItemBatch,
     TopicClusterBatch,
-)
-from indian_startup_content_intelligence.tools.html_uploader import upload_html
-from indian_startup_content_intelligence.tools.instagram_brief_renderer import (
-    InstagramBriefRendererTool,
-    render_briefs_to_html,
 )
 from indian_startup_content_intelligence.tools.rss_collector import (
     RSSFeedCollectorTool,
@@ -59,7 +52,7 @@ def _make_llm(deployment: str, max_tokens: int | None = None) -> LLM:
     between LiteLLM versions and the underlying OpenAI SDK). _bridge_azure_env
     is still called at import time as a belt-and-suspenders measure.
 
-    `max_tokens` is needed for the brief generator (large structured output);
+    `max_tokens` is needed for the brief generator (large markdown output);
     when None, the provider default applies (typically ~4096 for Azure).
     """
     api_key = os.getenv("AZURE_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
@@ -139,23 +132,16 @@ class IndianStartupContentIntelligenceCrew:
     def senior_creative_director_for_instagram_b2b_content___schema_compliant(self) -> Agent:
         return Agent(
             config=self.agents_config["senior_creative_director_for_instagram_b2b_content___schema_compliant"],  # type: ignore[index]
-            # 12000 max_tokens — the structured brief output is large
-            # (3 briefs × ~14 fields each); default 4096 caused truncation.
-            llm=_make_llm(_AZURE_GPT4O, max_tokens=12000),
+            # 16000 max_tokens — the brief markdown is the FINAL deliverable
+            # (3 elaborate briefs × ~3000 tokens each); generous ceiling so
+            # depth-mandates in the prompt can't bump up against truncation.
+            llm=_make_llm(_AZURE_GPT4O, max_tokens=16000),
             # Hard cap retries so we never get stuck in a 10+ min retry loop.
             max_retry_limit=1,
             # Cap total iterations the agent can take across all its actions.
             max_iter=8,
             # Hard wall-clock cap — agent fails fast rather than burning tokens.
-            max_execution_time=240,  # 4 minutes
-        )
-
-    @agent
-    def document_generation_specialist(self) -> Agent:
-        return Agent(
-            config=self.agents_config["document_generation_specialist"],  # type: ignore[index]
-            tools=[InstagramBriefRendererTool()],
-            llm=_make_llm(_AZURE_GPT4O_MINI),
+            max_execution_time=360,  # 6 minutes for the elaborate template
         )
 
     # ---------- Tasks ----------
@@ -190,77 +176,14 @@ class IndianStartupContentIntelligenceCrew:
 
     @task
     def generate_schema_compliant_instagram_briefs(self) -> Task:
-        # NO output_pydantic — agent outputs markdown directly. This bypasses
-        # the Instructor library entirely, which was the source of every
-        # "unknown_model" / retry-loop / credential-bridging failure mode.
-        # The brief agent now uses the same direct-LLM path as agents 1-4
-        # (which have always succeeded).
+        # NO output_pydantic — the agent produces markdown text directly.
+        # The markdown IS the final deliverable: it renders on the CrewAI
+        # dashboard and is also returned in result.raw via the API. No
+        # rendering, no upload, no HTML — keeps the pipeline simple and
+        # eliminates the catbox/instructor failure modes we hit previously.
         return Task(
             config=self.tasks_config["generate_schema_compliant_instagram_briefs"],  # type: ignore[index]
         )
-
-    @task
-    def generate_professional_word_ready_documents(self) -> Task:
-        return Task(
-            config=self.tasks_config["generate_professional_word_ready_documents"],  # type: ignore[index]
-        )
-
-    # ---------- Lifecycle hooks ----------
-
-    @after_kickoff
-    def _persist_html_locally(self, result):
-        """Save the final HTML to ./output/briefs.html for local convenience.
-
-        On CrewAI AMP this is best-effort — the platform doesn't persist files,
-        but the HTML is also returned in `result.raw` so it's still available
-        via the API. Locally the user just opens the file in browser or Word.
-        """
-        try:
-            html: str | None = None
-
-            if result.raw and "<!doctype html" in result.raw.lower():
-                html = result.raw
-
-            if not html and getattr(result, "tasks_output", None):
-                for task_output in result.tasks_output:
-                    pyd = getattr(task_output, "pydantic", None)
-                    if isinstance(pyd, InstagramBriefBatch):
-                        html = render_briefs_to_html(pyd)
-                        break
-
-            if not html:
-                return result
-
-            output_dir = Path("output")
-            output_dir.mkdir(exist_ok=True)
-            html_path = output_dir / "briefs.html"
-            html_path.write_text(html, encoding="utf-8")
-
-            # Try to upload to a public host so the user gets a real shareable URL.
-            public_url = upload_html(html)
-            url_line = (
-                f"  Public:  {public_url}\n"
-                if public_url
-                else "  Public:  (upload skipped — open the local file instead)\n"
-            )
-
-            banner = (
-                "\n"
-                "================================================================\n"
-                "  ✓  YOUR INSTAGRAM BRIEFS ARE READY\n"
-                "================================================================\n"
-                f"  File:    {html_path.resolve()}\n"
-                f"{url_line}"
-                f"  Size:    {len(html):,} characters of formatted content\n"
-                "\n"
-                "  → Click the public URL to view in browser (shareable).\n"
-                "  → Or open the local file in Microsoft Word.\n"
-                "================================================================\n"
-            )
-            print(banner)
-        except Exception as exc:
-            print(f"\n[after_kickoff] Could not persist HTML to disk: {exc}\n")
-        return result
 
     # ---------- Crew ----------
 
