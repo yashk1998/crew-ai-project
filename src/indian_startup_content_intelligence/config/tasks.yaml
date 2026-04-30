@@ -119,91 +119,73 @@ choose_format:
 
 generate_schema_compliant_instagram_briefs:
   description: |-
-    For each (RankedTopic, FormatRecommendation) pair, produce ONE production-ready InstagramBrief object. Generate EXACTLY 3 briefs total — 1 carousel + 2 stories per the format strategist's assignments. Persona is locked: **Indian early-stage SaaS/B2B founders, primary goal = awareness (drives the page's growth from 500K to 1M followers).**
+    Produce EXACTLY 3 Instagram briefs (1 carousel + 2 stories per the format strategist's assignments) for Indian early-stage SaaS/B2B founders. Output is **MARKDOWN TEXT** following the template below — NOT JSON. Persona is locked: awareness-driven content for the page's growth from 500K to 1M followers.
 
-    **Procedure (do this in order, every time):**
+    **Source-grounding rule (most important):** Every URL you cite MUST come from the upstream RankedTopic.items list. Copy URLs character-for-character. NEVER invent URLs. NEVER use example.com.
 
-    1. **Anchor in sources first.** For each topic, list the cluster's items. Their titles, URLs, and brief_descriptions are your factual ground truth. Populate `source_citations` by COPYING the actual items' urls VERBATIM (character-for-character) — title, url, source — plus a one-sentence relevance_note for each. NEVER write a URL that wasn't in the upstream cluster.
+    **Output the briefs using EXACTLY this markdown template (one block per brief, separated by `---`):**
 
-    2. **Strategic frame first, then hooks.** Fill in this order:
-       - `topic_line`: restate the canonical topic in one tight line.
-       - `one_line_thesis`: the single sentence reason this content exists. Sharp, specific.
-       - `target_subaudience`: be specific — "Pre-seed B2B SaaS founders in years 1-2 negotiating their first cap table" — not just "founders."
-       - `why_now`: cite the source. ("Inc42 reported X on 2026-04-29; founders are searching for benchmarks.")
-       - `primary_goal`: "awareness" — every brief is awareness-driven (the page is growing 500K→1M; awareness is meta-goal).
+    ```
+    ## Brief #N: <topic line>
 
-    3. **Set format + specs.** Use FormatRecommendation.format. Build `header` as 'Content Brief — Instagram <Format> | Goal: Awareness | Audience: Indian early-stage SaaS/B2B founders'. Build `specs`:
-       - Carousel: 'Duration: 8-10 slides | Aspect Ratio: 4:5 | Hook: Slide 1 | Hashtag Count: 5'
-       - Story: 'Duration: 4 frames × 15s | Aspect Ratio: 9:16 | Hook: Frame 1 | Hashtag Count: 1-2'
+    > **Thesis:** <one sharp sentence on why this content exists>
 
-    4. **Fact-check status:** Verified (claim is in source with explicit number/quote), Evergreen (timeless framework), or Unverified (claim is editorial). Always include a one-sentence note.
+    **Audience:** <specific subaudience, e.g. "Pre-seed B2B SaaS founders negotiating their first cap table">
+    **Why now:** <what makes this timely THIS WEEK; cite the source date>
+    **Format:** <carousel|story>
+    **Specs:** <e.g. "8-10 slides | 4:5 | Slide 1 hook | 5 hashtags" or "4 frames × 15s | 9:16 | Frame 1 hook | 1-2 hashtags">
+    **Fact-check:** <Verified|Evergreen|Unverified> — <one-sentence note>
 
-    5. **Hooks (LAST but BEST).** 3 hooks, each from a different angle. Each ≤15 words. For each: count characters, label the angle, write 1-2 sentences on why it works.
+    ### 📚 Sources
+    - [<title>](<url>) — <source name>
+    - [<title>](<url>) — <source name>
 
-    6. **Build the slide / shot blueprint.**
+    ### 🎣 Hooks
+    **A · <angle, e.g. "specific number">** — <hook text, ≤15 words>
+      _Why it works: <1 sentence>_
+    **B · <angle>** — <hook text>
+      _Why it works: <1 sentence>_
+    **C · <angle>** — <hook text>
+      _Why it works: <1 sentence>_
 
-       **For the CAROUSEL brief:**
-       - 5-10 slides. Slide 1 = hook. Slide N = CTA + summary.
-       - Each slide: visual_concept, headline (≤8 words on screen), body_copy (smaller text or empty), voiceover (USUALLY EMPTY for carousels), design_notes (hex codes, typography weights, layout grid).
+    ### 🎬 Slide / Shot Blueprint
+    | # | Slide / Frame | Visual + Design | Headline | Voiceover |
+    |---|---|---|---|---|
+    | 1 | Slide 1 | <visual concept; design: hex colors, typography, layout> | <≤8 words> | <empty for carousel; required + ≠ headline for story> |
+    | 2 | Slide 2 | ... | ... | ... |
+    | 3 | Slide 3 | ... | ... | ... |
 
-       **For the 2 STORY briefs:**
-       - 3-5 frames × 15s each. Frame 1 = hook + interactive sticker (poll, question, slider). Final frame = CTA + DM trigger.
-       - Each frame: visual_concept, headline (≤6 words on-screen sticker text), body_copy (usually empty for stories), voiceover (REQUIRED, see voiceover rules below), design_notes.
+    For CAROUSEL: 5-10 slides, slide 1 = hook, slide N = CTA + summary, voiceover column usually empty.
+    For STORY: 3-5 frames × 15s, frame 1 = hook + interactive sticker (poll/question), final frame = CTA + DM trigger. **Voiceover MUST be different from headline** — punchy, conversational, founder-to-founder; the headline is the on-screen sticker (≤6 words), voiceover is the narrative + emotion (1-3 sentences).
 
-    7. **VOICEOVER RULES — CRITICAL FOR STORIES (apply mechanically):**
+    ### ✏️ Caption
+    > <80-180 word primary caption with line breaks; first line survives Instagram's "Read More" cut>
 
-       a. **Voiceover MUST be different from on-screen text.** They complement, never duplicate. The on-screen text is a sticker/label/big-bold prompt (≤6 words). The voiceover carries the narrative, the texture, the emotion, the proof.
+    ### # Hashtags
+    `#tag1` `#tag2` `#tag3` `#tag4` `#tag5`
 
-          BAD:
-            on-screen: "Equity mistakes"
-            voiceover: "Equity mistakes"
+    ### 📣 CTAs
+    - **Primary:** <CTA matched to awareness goal>
+    - **Comment-driver:** <CTA designed to provoke comments — especially for stories>
 
-          GOOD:
-            on-screen: "Equity mistakes"
-            voiceover: "I've seen 50 founders sign cap tables they regret in year 2. Three of these mistakes happen in week one — before the product even exists."
+    ### 🎵 Audio
+    <For stories: real trending sound name + BPM + mood. For carousel: "No audio" with note on Story-tease plan.>
 
-       b. **Story voiceover tone:** Conversational. Founder-to-founder. Slightly insider. Like texting a friend the lesson, NOT delivering a lecture. NOT robotic. NOT corporate. NOT motivational ("hustle", "grind", "rise and shine" are forbidden).
+    ### 📅 Distribution & Engagement
+    <3-6 lines covering: best time IST, best day, first-60-min engagement plan (pinned comment copy, reply themes), follow-up post idea.>
 
-       c. **Story voiceover length per frame:** 1-3 sentences (15s frame). Punchy. End with a tease that pulls the viewer to the next frame.
+    ---
+    ```
 
-       d. **Carousel voiceover:** Usually EMPTY string. Only populate if the carousel will be cross-posted as a Reel/Story-tease — and even then, the voiceover MUST add a layer the on-screen text doesn't have. Never echo the headline.
-
-    8. **Captions (3 drafts):**
-       - primary: 80-180 words, opens with a Read-More-cut hook. Line breaks for readability.
-       - alt_1: different angle, different opening hook.
-       - alt_2: shorter, punchier — for testing.
-       - Capture word_count and first_line_hook for each.
-
-    9. **Hashtag tiers (at least 2: broad + niche):** 3-7 total tags. WITHOUT the # prefix. Each tier carries a one-line rationale.
-
-    10. **CTA playbook (5 variants):** primary_cta matched to primary_goal, plus save_cta / share_cta / follow_cta / comment_cta. Stories should bias the comment_cta (since the format drives comments). Carousels should bias the save_cta and follow_cta.
-
-    11. **Audio recommendation:**
-        - For STORIES: name a real trending sound (e.g. 'Maan Meri Jaan lo-fi, 85 BPM, contemplative') OR 'Original audio with voiceover' if speech-driven. Audio is essential for stories — never empty.
-        - For CAROUSEL: 'No audio' with a note on whether a Story-tease with audio helps reach.
-
-    12. **Visual design notes:** Explicit hex codes (e.g. '#1f4e79 deep blue, #ffffff bg'), typography pairing ('Inter 800 / Inter 400'), layout grid, recurring motif for brand consistency.
-
-    13. **Posting strategy:** Best time IST (8-10pm IST weekdays for B2B founders), best day, frequency, Story tease plan if cross-posting.
-
-    14. **Engagement playbook:** First-60-min moves — pinned-comment copy, reply themes, follow-up post idea. Stories specifically: "respond to every poll vote in the first hour with a personalized DM" type tactics.
-
-    15. **Cross-platform adaptation:** Concrete drafts of (a) 1000-1500 char LinkedIn post, (b) 5-7 tweet X thread, (c) 1-2 sentence YouTube Shorts hook.
-
-    16. **Success criteria:** Plain-language saves rate / comments rate / reach band targets, grounded in format mechanics and the meta-goal of follower growth.
-
-    **Hard rules:**
-    - Generate EXACTLY 3 briefs (1 carousel + 2 stories).
-    - Every URL in source_citations MUST be a character-for-character copy of a URL from the upstream RankedTopic.items list. Zero invented URLs. Zero modified URLs.
-    - Zero invented ₹ amounts, growth percentages, valuations, or headcounts.
-    - Zero motivational filler.
-    - For stories: voiceover MUST differ from on-screen text. This is mechanical — a check you do on every single frame before submitting.
-    - Output is structured JSON conforming exactly to InstagramBriefBatch — no preamble, no commentary, no markdown fences.
-  expected_output: An InstagramBriefBatch with exactly 3 production-ready briefs
-    (1 carousel + 2 stories). Every URL traceable to the upstream cluster. Every
-    story voiceover punchy, conversational, and DIFFERENT from on-screen text.
-    Every brief field filled with the level of specificity an editor needs to ship
-    without further questions.
+    **HARD RULES:**
+    - Output exactly 3 brief blocks (1 carousel + 2 stories) using this template.
+    - Every URL must come from the upstream cluster — never invent.
+    - Specific over vague: ₹ amounts, named Indian cos (Razorpay, Postman, Zoho, BharatPe etc.), real numbers from sources.
+    - For stories: every voiceover must differ from its headline.
+    - Zero motivational filler ("hustle", "grind", "rise and shine").
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
+  expected_output: |-
+    A markdown document containing exactly 3 brief blocks (1 carousel + 2 stories) following the template — Brief 1, Brief 2, Brief 3 each with thesis, audience, why-now, format/specs, fact-check, sources, hooks, slide/shot table, caption, hashtags, CTAs, audio, and distribution. All URLs traced to upstream cluster. Story voiceovers punchy and different from on-screen headlines.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -211,23 +193,22 @@ generate_schema_compliant_instagram_briefs:
 
 generate_professional_word_ready_documents:
   description: |-
-    Convert the structured Instagram briefs (InstagramBriefBatch) from the previous task into a beautifully formatted markdown preview with an embedded clickable link to the fully-styled HTML version.
+    Take the markdown briefs from the previous task and publish them as a styled, shareable webpage.
 
-    **Procedure (do not deviate):**
-    1. Read the InstagramBriefBatch produced by the previous task from context.
-    2. Serialize the entire batch object as a single JSON string.
-    3. Call the `instagram_brief_renderer` tool exactly once, passing that JSON string as `briefs_json`.
-    4. Return the tool's output VERBATIM as your final answer.
+    **Procedure (one tool call only):**
+    1. Take the entire markdown output from the previous brief generator task verbatim.
+    2. Call `instagram_brief_renderer` exactly once, passing that markdown as `briefs_markdown`.
+    3. Return the tool's output VERBATIM as your final answer.
 
     **Hard rules:**
     - Do NOT modify, summarize, or comment on the tool's output.
     - Do NOT wrap the output in code fences.
     - Do NOT add a preamble like "Here is the document:".
-    - The tool's output begins with a clickable HTML link banner followed by rich markdown — both are intentional. The CrewAI dashboard renders this inline.
-  expected_output: A markdown document beginning with a banner link to the styled
-    HTML version (`> 🔗 **[Click here...](data:text/html;base64,...)**`), followed
-    by `# Instagram Content Briefs ...` and the rich-markdown rendering of all
-    briefs. Returned verbatim from the `instagram_brief_renderer` tool.
+    - The tool returns a banner with a clickable shareable URL followed by the markdown — both intentional.
+  expected_output: A markdown document beginning with a banner link to a public
+    catbox.moe URL (`# 🔗 [📄 View the polished briefs document](https://files.catbox.moe/...)`)
+    followed by the markdown briefs. Returned verbatim from the
+    `instagram_brief_renderer` tool.
   agent: document_generation_specialist
   context:
   - generate_schema_compliant_instagram_briefs

@@ -620,48 +620,50 @@ def html_to_data_url(html: str) -> str:
 # ---------- Tool wrapper ----------
 
 class InstagramBriefRendererInput(BaseModel):
-    briefs_json: str = Field(
+    briefs_markdown: str = Field(
         ...,
-        description="JSON string of an InstagramBriefBatch — pass the previous task's structured output verbatim.",
+        description=(
+            "The full markdown of the 3 Instagram briefs from the previous "
+            "task. Pass it verbatim — the tool wraps it in a styled HTML "
+            "document and uploads to a public host."
+        ),
     )
 
 
 class InstagramBriefRendererTool(BaseTool):
-    """Renders InstagramBriefBatch into rich markdown + an embedded clickable HTML view.
+    """Wrap brief-markdown in styled HTML, upload to catbox, return shareable URL.
 
-    AMP's UI renders markdown inline, so the user sees a beautifully formatted
-    preview directly. The first line of the output is a clickable data URL link
-    that opens the fully-styled HTML version in any browser — no copy-paste of
-    raw HTML markup needed.
+    Input: the brief generator's markdown output verbatim.
+    Output: a banner with a clickable public URL + the original markdown.
     """
 
     name: str = "instagram_brief_renderer"
     description: str = (
-        "Renders an InstagramBriefBatch JSON string into a rich markdown "
-        "document for inline preview, with a clickable link to the fully "
-        "styled HTML version. Pass the previous task's InstagramBriefBatch "
-        "output as briefs_json. Return the tool's output verbatim — never edit it."
+        "Wraps the previous task's brief markdown in a professionally styled "
+        "HTML document, uploads it to a public host (catbox.moe), and returns "
+        "a banner with a clickable shareable URL plus the original markdown. "
+        "Pass the briefs as `briefs_markdown` verbatim. Return the tool's "
+        "output verbatim."
     )
     args_schema: Type[BaseModel] = InstagramBriefRendererInput
 
-    def _run(self, briefs_json: str) -> str:
+    def _run(self, briefs_markdown: str) -> str:
+        # Wrap the markdown in styled HTML using the existing formatter.
+        from indian_startup_content_intelligence.tools.professional_document_formatter import (
+            ProfessionalDocumentFormatter,
+        )
         try:
-            batch = InstagramBriefBatch.model_validate_json(briefs_json)
-        except Exception:
-            try:
-                data = json.loads(briefs_json)
-                batch = InstagramBriefBatch.model_validate(data)
-            except Exception as exc:
-                return (
-                    f"# Render error\n\n```\n{exc}\n```\n\n"
-                    f"```\n{briefs_json[:1500]}\n```"
-                )
-        markdown = render_briefs_to_markdown(batch)
-        html = render_briefs_to_html(batch)
+            html = ProfessionalDocumentFormatter()._run(content=briefs_markdown)
+        except Exception as exc:
+            html = (
+                "<!DOCTYPE html><html><body>"
+                f"<pre>{html_module.escape(briefs_markdown)}</pre>"
+                f"<hr><pre>HTML wrap failed: {html_module.escape(str(exc))}</pre>"
+                "</body></html>"
+            )
 
-        # Upload the HTML to a public file host so the user gets a real,
-        # shareable URL — not a base64 data URL that no chat UI renders cleanly.
-        public_url = upload_html(html)
+        # Upload to a public file host for a real, shareable URL.
+        public_url = upload_html(html, filename="indian-founder-briefs.html")
 
         if public_url:
             banner = (
@@ -672,12 +674,11 @@ class InstagramBriefRendererTool(BaseTool):
                 "---\n\n"
             )
         else:
-            # Fallback: data URL (works but ugly in chat UIs)
             data_url = html_to_data_url(html)
             banner = (
                 f"> 🔗 **[Open the fully-styled HTML]({data_url})**\n\n"
-                "_(Public-host upload failed — paste the link above into your "
-                "browser address bar to view.)_\n\n"
+                "_(Public-host upload failed — copy the link above into a "
+                "browser address bar.)_\n\n"
                 "---\n\n"
             )
-        return banner + markdown
+        return banner + briefs_markdown

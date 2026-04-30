@@ -190,9 +190,13 @@ class IndianStartupContentIntelligenceCrew:
 
     @task
     def generate_schema_compliant_instagram_briefs(self) -> Task:
+        # NO output_pydantic — agent outputs markdown directly. This bypasses
+        # the Instructor library entirely, which was the source of every
+        # "unknown_model" / retry-loop / credential-bridging failure mode.
+        # The brief agent now uses the same direct-LLM path as agents 1-4
+        # (which have always succeeded).
         return Task(
             config=self.tasks_config["generate_schema_compliant_instagram_briefs"],  # type: ignore[index]
-            output_pydantic=InstagramBriefBatch,
         )
 
     @task
