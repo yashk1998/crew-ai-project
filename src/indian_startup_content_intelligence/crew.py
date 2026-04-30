@@ -132,16 +132,28 @@ class IndianStartupContentIntelligenceCrew:
     def senior_creative_director_for_instagram_b2b_content___schema_compliant(self) -> Agent:
         return Agent(
             config=self.agents_config["senior_creative_director_for_instagram_b2b_content___schema_compliant"],  # type: ignore[index]
-            # 16000 max_tokens — the brief markdown is the FINAL deliverable
-            # (3 elaborate briefs × ~3000 tokens each); generous ceiling so
-            # depth-mandates in the prompt can't bump up against truncation.
-            llm=_make_llm(_AZURE_GPT4O, max_tokens=16000),
-            # Hard cap retries so we never get stuck in a 10+ min retry loop.
+            # Each brief task now generates ONE brief, so 8000 max_tokens is
+            # plenty (~3000 tokens of markdown + buffer). Splitting the work
+            # into 3 LLM calls eliminates the truncation risk that hit when a
+            # single call had to produce all 3 briefs.
+            llm=_make_llm(_AZURE_GPT4O, max_tokens=8000),
             max_retry_limit=1,
-            # Cap total iterations the agent can take across all its actions.
-            max_iter=8,
-            # Hard wall-clock cap — agent fails fast rather than burning tokens.
-            max_execution_time=360,  # 6 minutes for the elaborate template
+            max_iter=6,
+            # Per-brief wall-clock cap — fails fast rather than burning tokens.
+            max_execution_time=180,  # 3 min per brief
+        )
+
+    @agent
+    def markdown_assembly_specialist(self) -> Agent:
+        # Lightweight pass-through agent — concatenates the 3 brief outputs
+        # into one markdown document. No content authorship, just stitching.
+        # gpt-4o-mini is plenty for this; it's fast and cheap.
+        return Agent(
+            config=self.agents_config["markdown_assembly_specialist"],  # type: ignore[index]
+            llm=_make_llm(_AZURE_GPT4O_MINI, max_tokens=12000),
+            max_retry_limit=1,
+            max_iter=3,
+            max_execution_time=120,
         )
 
     # ---------- Tasks ----------
@@ -174,15 +186,33 @@ class IndianStartupContentIntelligenceCrew:
             output_pydantic=FormatRecommendationBatch,
         )
 
+    # Brief generation is split into 3 separate LLM calls (one per brief)
+    # so no single call has to fit all 3 elaborate briefs in its output
+    # window. The final assemble_final_briefs task concatenates them into
+    # one markdown document — the FINAL deliverable shown on the dashboard.
+
     @task
-    def generate_schema_compliant_instagram_briefs(self) -> Task:
-        # NO output_pydantic — the agent produces markdown text directly.
-        # The markdown IS the final deliverable: it renders on the CrewAI
-        # dashboard and is also returned in result.raw via the API. No
-        # rendering, no upload, no HTML — keeps the pipeline simple and
-        # eliminates the catbox/instructor failure modes we hit previously.
+    def generate_carousel_brief(self) -> Task:
         return Task(
-            config=self.tasks_config["generate_schema_compliant_instagram_briefs"],  # type: ignore[index]
+            config=self.tasks_config["generate_carousel_brief"],  # type: ignore[index]
+        )
+
+    @task
+    def generate_reel_part1_brief(self) -> Task:
+        return Task(
+            config=self.tasks_config["generate_reel_part1_brief"],  # type: ignore[index]
+        )
+
+    @task
+    def generate_reel_part2_brief(self) -> Task:
+        return Task(
+            config=self.tasks_config["generate_reel_part2_brief"],  # type: ignore[index]
+        )
+
+    @task
+    def assemble_final_briefs(self) -> Task:
+        return Task(
+            config=self.tasks_config["assemble_final_briefs"],  # type: ignore[index]
         )
 
     # ---------- Crew ----------

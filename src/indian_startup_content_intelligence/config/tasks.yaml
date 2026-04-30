@@ -5,15 +5,20 @@ collect_indian_startup_content:
 
     **Steps (do all of them in this order):**
 
-    1. **Tavily targeted search:** Call `Tavily Search` with one of these queries (pick the one that feels most likely to surface fresh, India-specific founder-relevant stories TODAY):
-       - 'Indian startup news this week'
-       - 'India early-stage founder news'
-       - 'India SaaS funding this week'
-       - 'Indian startup ecosystem trending'
+    1. **Tavily targeted search — call MULTIPLE times (2-3 calls) with DIFFERENT specific queries.** Generic queries return recap fluff with no named protagonists. Pick 2-3 from this menu of sharper queries:
+       - 'site:inc42.com Indian SaaS Series A funding'
+       - 'site:entrackr.com Indian B2B SaaS startup funding'
+       - 'site:yourstory.com Indian early-stage founder seed'
+       - 'site:economictimes.indiatimes.com Indian startup funding this week'
+       - 'Razorpay OR Postman OR Zoho OR BharatPe OR Freshworks OR Smallcase OR Atlan OR Chargebee OR Whatfix OR MoEngage OR Yellow.ai funding OR layoffs OR launch'
+       - 'Indian B2B SaaS founder Series A this week'
+       - 'India venture capital seed round B2B SaaS'
+       - 'Peak XV OR Accel India OR Blume OR Lightspeed India OR Stellaris OR Elevation portfolio funding'
+       Make multiple calls so the upstream brief generator has named-company stories to work with — not generic "Indian startup ecosystem trending" results.
 
     2. **RSS ambient sweep:** Call `rss_feed_collector` with no arguments (default Indian startup feeds, 24-hour window). If fewer than 3 items come back, retry with `hours_back=48`. The RSS tool internally validates URLs (drops dead links), so its output is pre-filtered.
 
-    3. **Merge and dedupe:** Combine both result sets. Deduplicate by URL. Drop items missing a title or url.
+    3. **Merge and dedupe:** Combine ALL Tavily call result sets + RSS results. Deduplicate by URL. Drop items missing a title or url.
 
     4. **Map to RawItems:** title, brief_description (1-2 sentences from the tool snippet, copy verbatim — do NOT rewrite), url (copy character-for-character), source (use the source from the tool output), published (ISO timestamp from tool, or empty string).
 
@@ -119,47 +124,51 @@ choose_format:
   context:
   - validate_and_rank
 
-generate_schema_compliant_instagram_briefs:
+generate_carousel_brief:
   description: |-
-    Produce EXACTLY 3 Instagram briefs for Indian early-stage SaaS/B2B founders, with the format mix the strategist assigned: 1 carousel + 2 reels in progression (the strategist labels each reel "Reel — Part 1 (Setup)" or "Reel — Part 2 (Payoff)" in rubric_match — read it). Output is **MARKDOWN TEXT** following the template below — NOT JSON. The markdown IS the final deliverable: it renders directly on the CrewAI dashboard. Persona is locked: awareness-driven content for the page's growth from 500K to 1M followers in 6 months.
+    Produce **ONE Instagram CAROUSEL brief** for Indian early-stage SaaS/B2B founders. Pick the topic from the upstream `choose_format` task whose `format == "carousel"`. Apply ALL rules from the agent backstory (voice, North Star, substance floor, forbidden patterns, fallback roster).
 
-    **Source-grounding rule (most important):** Every URL you cite MUST come from the upstream RankedTopic.items list. Copy URLs character-for-character. NEVER invent URLs. NEVER use example.com.
+    **Source-grounding rule:** Every URL you cite MUST come from the upstream RankedTopic.items list — copy character-for-character. NEVER use example.com, NEVER invent placeholder URLs, NEVER use "[Startup 1]" / "<Company>" / "Company X". If upstream cluster URLs are thin: omit the Sources section URLs, mark fact_check = "Evergreen", and use ≥ 3 REAL Indian company names from the FALLBACK COMPANY ROSTER in the agent backstory (Razorpay, Postman, Zoho, BharatPe, Atlan, Whatfix, MoEngage, Chargebee, Yellow.ai, Smallcase, Cred, Slice, Innovaccer, Khatabook, OfBusiness, Apna, Spinny, etc.).
 
-    **Output the briefs using EXACTLY this markdown template (one block per brief, separated by `---`):**
+    **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
     ```
-    ## Brief #N: <topic line>
+    ## Brief #1: <topic line>
 
     > **Thesis:** <one sharp sentence on why this content exists>
 
     **Audience:** <specific subaudience, e.g. "Pre-seed B2B SaaS founders negotiating their first cap table">
     **Why now:** <what makes this timely THIS WEEK; cite the source date>
-    **Format:** <Carousel | Reel — Part 1 (Setup) | Reel — Part 2 (Payoff)>
-    **Specs:** <e.g. "8-10 slides | 4:5 | Slide 1 hook | 5 hashtags" or "5-7 shots × 30-45s total | 9:16 | Hook in first 1.5s | DM trigger in final shot">
+    **Format:** Carousel
+    **Specs:** 8-10 slides | 4:5 | Slide 1 hook | 5-7 hashtags
     **Fact-check:** <Verified | Evergreen | Unverified> — <one-sentence note>
 
     ### Sources
-    - [<title>](<url>) — <source name>
-    - [<title>](<url>) — <source name>
+    - [<title>](<real upstream url>) — <source name>
+    - [<title>](<real upstream url>) — <source name>
 
     ### Hooks
     **A · Specific number / loss-aversion** — <hook text, ≤15 words>
-      _Why it works: <1 sentence tagged to format's primary metric>_
+      _Why it works: <1 sentence tagged to "saves">_
     **B · Contrarian-but-defensible** — <hook text>
       _Why it works: <1 sentence>_
     **C · Insider language / pattern recognition** — <hook text>
       _Why it works: <1 sentence>_
 
-    ### Slide / Shot Blueprint
-    | # | Slide / Shot | Visual + Design | Headline / On-screen | Voiceover | Transition |
+    ### Slide Blueprint
+    | # | Slide | Visual + Design | Headline | Voiceover | Transition |
     |---|---|---|---|---|---|
-    | 1 | <Slide 1 / Shot 1> | <visual concept; design: hex colors, typography, layout> | <≤8 words carousel; ≤6 words reel sticker> | <empty for carousel; required + ≠ headline for reel> | <cut / whip / match-cut / N/A for carousel> |
-    | 2 | ... | ... | ... | ... | ... |
+    | 1 | Slide 1 | <visual concept; design: hex colors, typography, layout grid, motion> | <≤8 words> | (empty) | N/A |
+    | 2 | Slide 2 | <visual> | <headline> | (empty) | N/A |
+    | 3 | Slide 3 | <visual> | <headline> | (empty) | N/A |
+    | 4 | Slide 4 | <visual> | <headline> | (empty) | N/A |
+    | 5 | Slide 5 | <visual> | <headline> | (empty) | N/A |
+    | 6 | Slide 6 | <visual> | <headline> | (empty) | N/A |
+    | 7 | Slide 7 | <visual> | <headline> | (empty) | N/A |
+    | 8 | Slide 8 | <visual> | <headline> | (empty) | N/A |
+    | 9 | Slide 9 | <visual> | <headline summary + Follow CTA> | (empty) | N/A |
 
-    For CAROUSEL: 8-10 slides. Slide 1 = hook, Slide 2 = stakes, Slides 3-N = framework (one step per slide), final slide = summary + Follow CTA. Voiceover column usually empty.
-    For REEL: 5-7 shots, 30-45s total, 9:16. Shot 1 = visual hook in <1.5s. Final shot = CTA + DM trigger. **Voiceover MUST differ from on-screen text** (sticker is ≤6 words; voiceover is 1-3 conversational sentences, founder-to-founder, ending each shot with a tease that pulls to the next).
-    For REEL — PART 1 (SETUP): plant the question, surface the tension, end with a teaser explicitly previewing Part 2 ("Tomorrow: the 3 numbers that decide it.").
-    For REEL — PART 2 (PAYOFF): open with "Yesterday I asked..." callback, then deliver the framework / numbers / contrarian take. Reference Part 1 in the caption.
+    Slide 1 = hook. Slide 2 = stakes / why this matters. Slides 3-8 = framework, one step per slide, each with a real named Indian company example. Final slide = summary + Follow CTA. Voiceover column empty.
 
     ### Captions (3 drafts)
 
@@ -167,10 +176,10 @@ generate_schema_compliant_instagram_briefs:
     > <story-led primary caption with line breaks every 1-2 sentences; first line survives Instagram's "Read More" cut at ~125 chars>
 
     **Medium (60-90 words):**
-    > <punchier, framework-led; no story setup; A/B alternative or cross-platform variant>
+    > <punchier, framework-led; no story setup>
 
     **Short (≤30 words):**
-    > <pure hook + CTA; for reels where the video carries the message>
+    > <pure hook + CTA>
 
     ### Hashtags (tiered, 5-7 total, no #)
     - **Broad (1-2):** <e.g. IndianStartups, SaaS>
@@ -179,62 +188,287 @@ generate_schema_compliant_instagram_briefs:
     - **Trend (0-1):** <only if a trending tag legitimately matches; else omit>
 
     ### CTAs
-    - **Primary:** <matched to format's primary metric — Save / Watch Again / Share with co-founder>
-    - **Comment-driver:** <specific low-friction question, e.g. "Which one are you most guilty of? 1, 2, or 3?">
-    - **DM-trigger:** <reel only — e.g. "DM 'CAP' for the cap-table template">
-    - **Follow:** <used in pinned comment + final slide/shot, e.g. "Follow for daily breakdowns of Indian early-stage playbooks">
+    - **Primary:** Save — <specific reason, e.g. "Save for your next investor deck.">
+    - **Comment-driver:** <specific question, e.g. "Which mistake have you made? 1, 2, or 3?">
+    - **DM-trigger:** <e.g. "DM 'CAP' for the cap-table template">
+    - **Follow:** Follow for daily breakdowns of Indian early-stage playbooks.
 
     ### Audio
-    <Reel: trending sound name + BPM + mood + a fallback. Carousel: "No audio (silent IG carousel)" + Story-tease audio note.>
+    No audio (silent IG carousel). For Story-tease repurposing: <real trending audio name + BPM + mood>.
 
     ### Posting Strategy
-    - **Day + time (IST):** <e.g. Tue 9:00 AM IST — founders pre-stand-up; justify from topic if applicable>
+    - **Day + time (IST):** <e.g. Tue 9:00 AM IST — founders pre-stand-up>
     - **Cross-promo:** <Story tease 2-4 hours before; what the tease shows>
-    - **Sequencing:** <for the reel pair — Part 1 publishes 24h before Part 2; Part 2 caption opens with "Yesterday I asked..." callback>
+    - **Sequencing:** Standalone carousel.
 
     ### Engagement Playbook (first 60 minutes)
     - **Pinned comment (verbatim, ≤200 chars):** <framework summary + DM trigger>
     - **Prepared reply lines (3):**
       1. Agreement amplifier — <line>
       2. Gentle disagreement — <line>
-      3. Follow-up question to extend the thread — <line>
-    - **Outbound engagement (3 accounts to comment on within 30 min):** <named accounts in niche>
+      3. Follow-up question — <line>
+    - **Outbound engagement (3 named accounts):** <e.g. @nithin0dha, @sajithpai, @aviralbhat>
     - **Story amplifier (30 min after feed post):** <slide concept + poll/question sticker>
     - **Follow-up post idea (tomorrow's queue):** <the natural next post extending this topic>
 
     ---
     ```
 
-    **NORTH STAR — what these briefs are optimised for:**
-
-    The KPI is page growth from 500K → 1M followers in 6 months. The two compounding signals are AWARENESS (reach to non-followers via Explore + recommended feeds) and LIKES (the dominant low-friction signal Instagram's algorithm reads to push posts to more non-follower feeds). Every line of every brief must pass at least one of:
-    (1) Earns a LIKE in under 3 seconds — via a quotable line, visual punch, or stab-of-recognition insight a founder taps to validate.
-    (2) Earns a SAVE — via a tactical framework, numeric breakdown, or checklist worth keeping.
-    (3) Earns a SHARE — via a contrarian-and-defensible take a founder forwards to a co-founder, investor, or hiring manager.
-    Lines that earn none of these are wasted impressions. Cut them or rewrite — never pad to length.
-
-    **SUBSTANCE FLOOR — minimums every brief MUST clear (no exceptions):**
-    - **Carousel:** at least 8 slides (target 9-10). Every slide carries a distinct insight, step, or stat. No filler / transition slides.
-    - **Reel:** at least 5 shots (target 6-7). Every shot is a distinct beat (question, twist, evidence, framework, payoff). Hook in <1.5s. Final shot = CTA + DM trigger.
-    - **All 3 caption drafts** present and complete: long (140-180w), medium (60-90w), short (≤30w). No skipping. Long caption's first line survives the "Read More" cut at ~125 chars.
-    - **Specificity floor per brief:** ≥ 3 named Indian companies, ≥ 2 specific ₹ amounts or percentages, ≥ 1 named framework / playbook / role / named person.
-    - **All 5 engagement-playbook components** filled with concrete specifics (pinned comment verbatim + 3 prepared reply lines + 3 named outbound accounts + Story amplifier slide + follow-up post idea).
-    - **All 3 hook angles** filled (specific-number, contrarian-defensible, insider-language) with their own one-sentence why-it-works.
-    - **All 4 CTAs** filled: primary, comment-driver, DM-trigger, follow.
-    - **At least 1 real upstream URL** per brief; preferably 2-3 from the cluster.
-
     **HARD RULES:**
-    - Output exactly 3 brief blocks: 1 carousel + 2 reels (Part 1 then Part 2). Read each FormatRecommendation.format and rubric_match to know which is which.
-    - Every URL must come from the upstream cluster — never invent. If sources are thin, mark fact_check as Evergreen and frame the brief as a pattern.
-    - Specific over vague: ₹ amounts, named Indian cos (Razorpay, Postman, Zoho, BharatPe, Freshworks, Smallcase, Cred, Slice, Yellow.ai, Atlan, Chargebee, Khatabook, OfBusiness, Apna, Whatfix, MoEngage, etc.), real numbers from sources.
-    - For reels: every voiceover line must differ from its on-screen sticker text.
-    - For the 2-reel progression: Part 1 explicitly teases Part 2 (final shot teaser); Part 2 explicitly callbacks Part 1 (opening voiceover + caption).
-    - Zero motivational filler ("hustle", "grind", "rise and shine", "trust the process").
+    - Output exactly ONE brief block, the carousel.
+    - ≥ 8 slide rows in the table. Every slide a distinct insight.
+    - All 3 caption drafts complete (long 140-180w, medium 60-90w, short ≤30w).
+    - ≥ 3 named Indian companies, ≥ 2 specific ₹ amounts or percentages, ≥ 1 named framework / playbook / role per brief.
+    - All 5 engagement-playbook components filled with specifics.
+    - All 3 hooks + all 4 CTAs filled.
+    - Zero example.com, zero placeholder names, zero motivational filler.
     - Every line passes the like-save-share test, or it gets cut.
-    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output. The markdown IS the final deliverable.
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
   expected_output: |-
-    A markdown document containing exactly 3 brief blocks following the template — Brief 1 (Carousel), Brief 2 (Reel — Part 1 Setup), Brief 3 (Reel — Part 2 Payoff), each with: thesis, audience, why-now, format/specs, fact-check, sources, 3 hooks with reasoning, slide/shot blueprint table, three caption drafts (long/medium/short), tiered hashtags, multi-CTA stack (primary/comment/DM/follow), audio, posting strategy, and a 5-part engagement playbook (pinned comment, 3 prepared replies, outbound engagement, Story amplifier, follow-up post idea). All URLs traced to upstream cluster. Reel voiceovers punchy and different from on-screen stickers. Part 1 sets up + Part 2 pays off, with explicit cross-references between them.
+    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---", containing: thesis, audience, why-now, format=Carousel, specs, fact-check, sources (real upstream URLs or omitted), 3 hooks with reasoning, slide blueprint table with ≥8 rows, three caption drafts (long/medium/short), tiered hashtags, multi-CTA stack (primary/comment/DM/follow), audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
   - choose_format
+
+generate_reel_part1_brief:
+  description: |-
+    Produce **ONE Instagram REEL brief — Part 1 (Setup)** for Indian early-stage SaaS/B2B founders. Pick the topic from the upstream `choose_format` task whose `rubric_match == "Reel — Part 1 (Setup)"`. Apply ALL rules from the agent backstory (voice, North Star, substance floor, forbidden patterns, fallback roster).
+
+    **Source-grounding rule:** Every URL you cite MUST come from the upstream RankedTopic.items list — copy character-for-character. NEVER use example.com, NEVER invent placeholder URLs. If upstream cluster URLs are thin: omit Sources URLs, mark fact_check = "Evergreen", and use ≥ 3 REAL Indian company names from the FALLBACK COMPANY ROSTER.
+
+    **Part 1 narrative role:** SETUP. Surface the tension, name the dilemma, plant the question. End the final shot with an explicit teaser for Part 2 ("Tomorrow: the 3 numbers that decide it.").
+
+    **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
+
+    ```
+    ## Brief #2: <topic line>
+
+    > **Thesis:** <one sharp sentence on why this content exists, framed as Part 1 of a 2-reel arc>
+
+    **Audience:** <specific subaudience>
+    **Why now:** <what makes this timely THIS WEEK; cite the source date>
+    **Format:** Reel — Part 1 (Setup)
+    **Specs:** 5-7 shots × 30-45s total | 9:16 | Hook in first 1.5s | Final shot = explicit teaser for Part 2
+    **Fact-check:** <Verified | Evergreen | Unverified> — <note>
+
+    ### Sources
+    - [<title>](<real upstream url>) — <source name>
+
+    ### Hooks
+    **A · Specific number / loss-aversion** — <hook text, ≤15 words>
+      _Why it works: <1 sentence tagged to "watch_time">_
+    **B · Contrarian-but-defensible** — <hook text>
+      _Why it works: <1 sentence>_
+    **C · Insider language / pattern recognition** — <hook text>
+      _Why it works: <1 sentence>_
+
+    ### Shot Blueprint
+    | # | Shot | Visual + Design | On-screen sticker (≤6 words) | Voiceover (1-3 sentences, ≠ sticker) | Transition |
+    |---|---|---|---|---|---|
+    | 1 | Shot 1 | <visual hook in <1.5s — face / motion / text reveal; design notes> | <sticker> | <conversational founder-to-founder voiceover, MUST DIFFER from sticker, ends with tease pulling to next shot> | <whip / cut / match-cut> |
+    | 2 | Shot 2 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 3 | Shot 3 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 4 | Shot 4 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 5 | Shot 5 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 6 | Shot 6 | <visual; final shot — explicit teaser for Part 2> | <sticker, e.g. "Tomorrow: Part 2"> | <voiceover that previews Part 2 specifically: e.g. "Tomorrow I'll show you the 3 numbers that decide which side wins."> | end |
+
+    **Voiceover discipline:** Every voiceover line MUST DIFFER from its on-screen sticker. The sticker is ≤6 words; the voiceover is 1-3 conversational sentences. Each voiceover ends with a tease pulling to the next shot. Final shot's voiceover EXPLICITLY previews Part 2.
+
+    ### Captions (3 drafts)
+
+    **Long (140-180 words):**
+    > <story-led primary caption; first line survives "Read More" cut; ends teasing Part 2>
+
+    **Medium (60-90 words):**
+    > <punchier; ends teasing Part 2>
+
+    **Short (≤30 words):**
+    > <pure hook + CTA + Part 2 tease>
+
+    ### Hashtags (tiered, 5-7 total, no #)
+    - **Broad (1-2):** <...>
+    - **Niche (2-3):** <...>
+    - **Community / branded (1):** <...>
+    - **Trend (0-1):** <only if legit; else omit>
+
+    ### CTAs
+    - **Primary:** Watch tomorrow's Part 2 — <reason>.
+    - **Comment-driver:** <specific question that splits the audience, e.g. "Bootstrap or raise? Drop your pick below.">
+    - **DM-trigger:** <e.g. "DM 'PART2' for the early notification">
+    - **Follow:** Follow so Part 2 hits your feed tomorrow.
+
+    ### Audio
+    <real trending sound name + BPM + mood, plus a fallback (trends shift fast)>
+
+    ### Posting Strategy
+    - **Day + time (IST):** <best slot for the topic; e.g. Mon 8:30 AM IST>
+    - **Cross-promo:** Story tease 2-4 hours before with poll sticker.
+    - **Sequencing:** Part 1 publishes 24h before Part 2. Pin Part 2 link in Part 1's pinned comment as soon as Part 2 goes live.
+
+    ### Engagement Playbook (first 60 minutes)
+    - **Pinned comment (verbatim, ≤200 chars):** <Part 2 tease + DM trigger>
+    - **Prepared reply lines (3):**
+      1. Agreement amplifier — <line>
+      2. Gentle disagreement — <line>
+      3. Follow-up question — <line>
+    - **Outbound engagement (3 named accounts):** <accounts>
+    - **Story amplifier (30 min after feed post):** <slide concept + poll/question sticker>
+    - **Follow-up post idea (tomorrow's queue):** Reel Part 2 (Payoff).
+
+    ---
+    ```
+
+    **HARD RULES:**
+    - Output exactly ONE brief block, the Reel Part 1.
+    - ≥ 5 shot rows in the table (target 6-7). Every shot a distinct beat.
+    - Final shot is an explicit Part-2 teaser (sticker + voiceover both reference Part 2).
+    - Every voiceover line MUST DIFFER from its sticker.
+    - All 3 caption drafts complete and end teasing Part 2.
+    - ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework.
+    - All 5 engagement-playbook components filled.
+    - All 3 hooks + all 4 CTAs filled.
+    - Zero example.com, zero placeholder names, zero motivational filler.
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence.
+  expected_output: |-
+    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---", containing: thesis, audience, why-now, format=Reel — Part 1 (Setup), specs, fact-check, sources, 3 hooks with reasoning, shot blueprint table with ≥5 rows where the final shot explicitly teases Part 2 and every voiceover differs from its sticker, three caption drafts (each ending with a Part 2 tease), tiered hashtags, multi-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+  agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
+  context:
+  - validate_and_rank
+  - choose_format
+
+generate_reel_part2_brief:
+  description: |-
+    Produce **ONE Instagram REEL brief — Part 2 (Payoff)** for Indian early-stage SaaS/B2B founders. Pick the topic from the upstream `choose_format` task whose `rubric_match == "Reel — Part 2 (Payoff)"`. Apply ALL rules from the agent backstory (voice, North Star, substance floor, forbidden patterns, fallback roster).
+
+    **Source-grounding rule:** Every URL you cite MUST come from the upstream RankedTopic.items list — copy character-for-character. NEVER use example.com, NEVER invent placeholder URLs. If upstream cluster URLs are thin: omit Sources URLs, mark fact_check = "Evergreen", and use ≥ 3 REAL Indian company names from the FALLBACK COMPANY ROSTER.
+
+    **Part 2 narrative role:** PAYOFF. Open by acknowledging Part 1 ("Yesterday I asked..."). Deliver the framework / numbers / contrarian take that resolves Part 1's tension. Reference Part 1 in caption + pinned comment.
+
+    **Read Part 1's brief from upstream context** (`generate_reel_part1_brief`) — your opening voiceover and caption must callback Part 1's specific question / framing. Do NOT write a generic "Yesterday I asked..." — quote or paraphrase Part 1's actual setup.
+
+    **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
+
+    ```
+    ## Brief #3: <topic line>
+
+    > **Thesis:** <one sharp sentence framing this as the Part 2 payoff to Part 1's setup>
+
+    **Audience:** <specific subaudience>
+    **Why now:** <timeliness; reference Part 1 cadence>
+    **Format:** Reel — Part 2 (Payoff)
+    **Specs:** 5-7 shots × 30-45s total | 9:16 | Shot 1 = "Yesterday I asked..." callback to Part 1 | Final shot = framework summary + DM trigger
+    **Fact-check:** <Verified | Evergreen | Unverified> — <note>
+
+    ### Sources
+    - [<title>](<real upstream url>) — <source name>
+
+    ### Hooks
+    **A · Specific number / loss-aversion** — <hook, ≤15 words; references Part 1's question>
+      _Why it works: <1 sentence tagged to "watch_time">_
+    **B · Contrarian-but-defensible** — <hook>
+      _Why it works: <1 sentence>_
+    **C · Insider language / pattern recognition** — <hook>
+      _Why it works: <1 sentence>_
+
+    ### Shot Blueprint
+    | # | Shot | Visual + Design | On-screen sticker (≤6 words) | Voiceover (1-3 sentences, ≠ sticker) | Transition |
+    |---|---|---|---|---|---|
+    | 1 | Shot 1 | <visual; opens with Part 1 callback> | <sticker, e.g. "Yesterday I asked..."> | <voiceover that paraphrases Part 1's specific question, then promises the answer; MUST DIFFER from sticker> | <whip> |
+    | 2 | Shot 2 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 3 | Shot 3 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 4 | Shot 4 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 5 | Shot 5 | <visual> | <sticker> | <voiceover> | <transition> |
+    | 6 | Shot 6 | <visual; final = framework summary + DM trigger> | <sticker, e.g. "DM 'PLAY' for full"> | <voiceover that lands the framework + names the DM trigger> | end |
+
+    **Voiceover discipline:** Every voiceover line MUST DIFFER from its on-screen sticker. The sticker is ≤6 words; the voiceover is 1-3 conversational sentences.
+
+    ### Captions (3 drafts)
+
+    **Long (140-180 words):**
+    > <opens with "Yesterday I asked..." callback to Part 1 (paraphrase Part 1's actual question), then delivers the framework / numbers / contrarian take; first line survives "Read More" cut>
+
+    **Medium (60-90 words):**
+    > <punchier; opens with Part 1 callback>
+
+    **Short (≤30 words):**
+    > <pure hook + CTA + Part 1 reference>
+
+    ### Hashtags (tiered, 5-7 total, no #)
+    - **Broad (1-2):** <...>
+    - **Niche (2-3):** <...>
+    - **Community / branded (1):** <...>
+    - **Trend (0-1):** <only if legit; else omit>
+
+    ### CTAs
+    - **Primary:** Save the framework — <reason>.
+    - **Comment-driver:** <specific question, e.g. "Which side won — was your gut right?">
+    - **DM-trigger:** <e.g. "DM 'PLAY' for the full framework as a 1-pager">
+    - **Follow:** Follow for tomorrow's daily breakdown.
+
+    ### Audio
+    <real trending sound name + BPM + mood, plus a fallback>
+
+    ### Posting Strategy
+    - **Day + time (IST):** <24h after Part 1; same time slot>
+    - **Cross-promo:** Pin Part 2 in Part 1's pinned comment within 5 min of publish. Story-share Part 1 with "Part 2 is live ↓".
+    - **Sequencing:** Part 2 of 2-reel pair. Reference Part 1 in caption opening line.
+
+    ### Engagement Playbook (first 60 minutes)
+    - **Pinned comment (verbatim, ≤200 chars):** <framework summary + Part 1 link reference + DM trigger>
+    - **Prepared reply lines (3):**
+      1. Agreement amplifier — <line>
+      2. Gentle disagreement — <line>
+      3. Follow-up question — <line>
+    - **Outbound engagement (3 named accounts):** <accounts>
+    - **Story amplifier (30 min after feed post):** <slide concept + sticker; share Part 1 too>
+    - **Follow-up post idea (tomorrow's queue):** <next-day topic that continues the thread>
+
+    ---
+    ```
+
+    **HARD RULES:**
+    - Output exactly ONE brief block, the Reel Part 2.
+    - Shot 1 sticker / voiceover EXPLICITLY callback Part 1's specific question (read Part 1 from context).
+    - ≥ 5 shot rows (target 6-7). Every shot a distinct beat.
+    - Every voiceover line MUST DIFFER from its sticker.
+    - All 3 caption drafts complete and open with "Yesterday I asked..." callback to Part 1.
+    - ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework.
+    - All 5 engagement-playbook components filled.
+    - All 3 hooks + all 4 CTAs filled.
+    - Zero example.com, zero placeholder names, zero motivational filler.
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence.
+  expected_output: |-
+    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---", containing: thesis, audience, why-now, format=Reel — Part 2 (Payoff), specs, fact-check, sources, 3 hooks with reasoning, shot blueprint table with ≥5 rows where Shot 1 explicitly callbacks Part 1's question and every voiceover differs from its sticker, three caption drafts (each opening with a Part 1 callback), tiered hashtags, multi-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+  agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
+  context:
+  - validate_and_rank
+  - choose_format
+  - generate_reel_part1_brief
+
+assemble_final_briefs:
+  description: |-
+    Concatenate the 3 brief markdown blocks from upstream tasks into ONE markdown document. This is the FINAL deliverable shown on the CrewAI dashboard.
+
+    **Procedure:**
+    1. Take `generate_carousel_brief`'s output (the carousel brief) and place it FIRST.
+    2. Take `generate_reel_part1_brief`'s output (Reel Part 1 Setup) and place it SECOND.
+    3. Take `generate_reel_part2_brief`'s output (Reel Part 2 Payoff) and place it THIRD.
+    4. Renumber the headings so the carousel is "## Brief #1:", Reel Part 1 is "## Brief #2:", Reel Part 2 is "## Brief #3:" — even if the upstream brief had a different number.
+    5. Ensure each brief block ends with a `---` separator. Add one if missing.
+    6. Trim leading/trailing whitespace.
+
+    **HARD RULES:**
+    - DO NOT edit, summarize, rewrite, or "improve" any brief content. Pass through verbatim.
+    - DO NOT add commentary, preamble, postamble, or a "Here is the assembled output:" line.
+    - DO NOT wrap the whole output in a code fence.
+    - Output is the assembled markdown directly. The CrewAI dashboard will render it.
+  expected_output: |-
+    A single markdown document containing all 3 brief blocks concatenated in order
+    (Brief #1 Carousel, Brief #2 Reel Part 1 Setup, Brief #3 Reel Part 2 Payoff),
+    each separated by `---`. No commentary, no preamble.
+  agent: markdown_assembly_specialist
+  context:
+  - generate_carousel_brief
+  - generate_reel_part1_brief
+  - generate_reel_part2_brief
