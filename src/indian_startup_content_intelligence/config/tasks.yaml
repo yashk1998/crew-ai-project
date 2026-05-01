@@ -5,27 +5,21 @@ collect_indian_startup_content:
 
     **Steps (do all of them in this order):**
 
-    1. **Tavily targeted search — call 3 times with DIFFERENT queries chosen for FRESHNESS + DIVERSITY of names.** The downstream brief generator must NOT recycle the same Razorpay / Zoho / BharatPe / Cred every week. Bias your queries toward fresh, less-covered companies. Pick 3 from this menu:
+    1. **Tavily — call 3 times with queries that surface CONCEPT SIGNALS, not company names.** You are NOT building a list of companies. You are collecting signal about which founder concept is most in the air this week — runway anxiety, term-sheet questions, hiring stage-gates, regulatory shifts, etc. The brief generator uses this signal to pick which concept to teach. Pick 3 queries spanning different concept signals:
 
-       *Site-scoped current-week funding (best for fresh names):*
-       - 'site:inc42.com Indian SaaS Series A funding'
-       - 'site:entrackr.com Indian B2B SaaS startup seed funding'
-       - 'site:yourstory.com Indian early-stage founder seed Series A'
-       - 'site:moneycontrol.com Indian startup funding raise'
-       - 'site:thehindubusinessline.com Indian SaaS startup funding'
+       *Capital / runway signals:* 'Indian startup layoffs this week' · 'Indian startup down round OR bridge round 2024 OR 2025' · 'Indian SaaS runway burn multiple'
 
-       *Fresh-names searches (deliberately exclude the famous-5):*
-       - 'Indian B2B SaaS startup funding this week -Razorpay -Zoho -Freshworks -BharatPe'
-       - 'Indian seed-stage SaaS launch this week -Razorpay -Cred -Postman'
-       - 'Indian vertical SaaS Series A 2024 OR 2025 funding'
-       - 'Indian AI startup funding seed OR Series A -OpenAI'
-       - 'Setu OR M2P OR Decentro OR Hasura OR Capillary OR Rupifi OR Niro OR Plivo OR Vymo OR GoKwik OR Easebuzz OR Shiprocket OR Hyperverge OR Mantra OR BimaPe OR Sarvam OR Krutrim funding OR launch'
+       *Fundraising / term-sheet signals:* 'Indian Series A term sheet anti-dilution liquidation preference' · 'Indian seed round dilution cap table' · 'Indian VC investor terms 2024 OR 2025'
 
-       *VC portfolio / investor-led:*
-       - 'Peak XV OR Accel India OR Blume OR Lightspeed India OR Stellaris OR Elevation OR Z47 OR Bessemer India portfolio funding announcement'
-       - 'Together Fund OR Beenext OR Nexus India OR Kalaari OR Chiratae portfolio early-stage'
+       *GTM / hiring signals:* 'Indian SaaS GTM motion founder-led sales' · 'Indian startup first sales hire ARR' · 'Indian B2B SaaS pricing 2024'
 
-       Choose at LEAST one site-scoped query and at LEAST one fresh-names query. Avoid the famous-name OR query unless your other queries returned 0 fresh names.
+       *Product / regulation signals:* 'India DPDP Act SaaS data residency' · 'India ODI FEMA Delaware reverse flip startup' · 'Indian AI startup regulation'
+
+       *Founder-psych signals:* 'Indian startup founder dispute co-founder split' · 'Indian startup pivot 2024 OR 2025'
+
+       *General timeliness (one slot OK):* 'site:inc42.com Indian startup funding this week' · 'site:entrackr.com Indian SaaS funding' · 'site:yourstory.com Indian early-stage founder'
+
+       Pick queries that reveal what concept is in the air, not which company is in the news. Avoid heavy famous-name OR queries.
 
     2. **RSS ambient sweep:** Call `rss_feed_collector` with no arguments (default Indian startup feeds, 24-hour window). If fewer than 3 items come back, retry with `hours_back=48`. The RSS tool internally validates URLs (drops dead links), so its output is pre-filtered.
 
@@ -137,31 +131,34 @@ choose_format:
 
 generate_carousel_brief:
   description: |-
-    Produce **ONE Instagram CAROUSEL brief** for Indian early-stage SaaS/B2B founders. Pick the topic from the upstream `choose_format` task whose `format == "carousel"`. Apply ALL rules from the agent backstory (Editorial Frame, Concept Menu, Voice Principles, Substance Floor, Multi-company Diversity, Forbidden Patterns).
+    Produce **ONE Instagram CAROUSEL brief** that teaches early-stage Indian SaaS/B2B founders ONE tactical framework / mental model / decision rule / checklist. Pick the topic from the upstream `choose_format` task whose `format == "carousel"`. Apply ALL rules from the agent backstory (Editorial Frame, Concept Menu, Voice Principles, Substance Floor, Forbidden Patterns).
 
-    **EDITORIAL FRAME (read first):** This brief is CONCEPT-LED, not COMPANY-LED. The thesis names a STARTUP CONCEPT from the Concept Menu (capital efficiency, default-alive runway, founder-led GTM, ESOP economics, second-product timing, etc.) — not a company's playbook. The concept is illustrated by ≥ 3 DIFFERENT Indian companies' approaches. NO single company carries more than 40% of the slides.
+    **EDITORIAL FRAME (read first):** The upstream topic is a SIGNAL — a reason this concept is timely THIS WEEK — not a subject. Use the topic to pick which concept from the Concept Menu the founders most need right now, then teach the concept as a tactical framework. The subject is the founder's reasoning, not a company.
 
-    **FRESH > FAMOUS:** Look at the upstream RankedTopic.items. Are there company names there that aren't Razorpay / Zoho / BharatPe / Cred / Freshworks? Use THOSE first. If the cluster has Setu, M2P, Hasura, Capillary, Sarvam, Plivo, Rupifi, Vymo, Niro, GoKwik, etc. — they are the protagonists. The famous-5 only appear if they're directly in the cluster AND the concept genuinely needs them.
+    **Companies — strict rules:**
+    - DEFAULT: zero company names in the brief. The brief is a pure framework / principle / checklist.
+    - EXCEPTION: 1–2 light company references allowed across the entire brief if naming a company genuinely strengthens a tactical point. Never as the subject of a slide. Never structural. If a slide reads "Step 3: Co X's approach" — rewrite as "Step 3: <the principle>."
+    - There is NO minimum-companies rule. A brief with zero companies is GOOD if the framework lands.
 
     **URL DISCIPLINE — read twice:**
-    - Cite ONLY URLs that appear character-for-character in the upstream `RankedTopic.items[*].url` field. Copy them verbatim.
-    - NEVER invent URLs. NEVER reconstruct from memory. NEVER substitute a company homepage for an article URL. NEVER use example.com.
-    - If you cannot find a URL in the upstream context: OMIT the Sources block, mark fact_check = "Evergreen". A brief with NO sources beats a brief with broken 404 sources.
+    - Cite ONLY URLs that appear character-for-character in the upstream `RankedTopic.items[*].url` field. Copy verbatim.
+    - NEVER invent URLs, NEVER reconstruct from memory, NEVER use a company homepage as an article stand-in.
+    - **Sources block is OPTIONAL.** Default to OMIT for evergreen tactical content (most briefs). Only include Sources if the brief is genuinely responding to a specific event AND you have the verbatim upstream URL. Mark fact_check = "Evergreen — tactical framework, not news-anchored" when omitting.
 
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
     ```
-    ## Brief #1: <Concept name — what [Co1], [Co2], [Co3] reveal>
+    ## Brief #1: <Tactical framework title — e.g. "5 signs your runway model is lying to you" / "The 7-question diligence prep before your first VC call" / "Cap-table moves to make in your first 90 days">
 
-    > **Concept being taught:** <named concept from the Concept Menu, e.g. "Capital efficiency at Series D" / "The fire-your-first-sales-hire stage gate" / "Equal co-founder splits as Series-A killer">
-    > **Thesis:** <one sharp sentence stating the non-obvious lesson the founder will walk away with — NOT what a company did, but what the pattern across companies reveals>
-    > **Companies illustrated (3+, each must be different):** <Co1 · Co2 · Co3 [· Co4]> — prefer fresh Tavily-surfaced names over famous-5 autopilot.
+    > **Concept being taught:** <named concept from the Concept Menu — the framework / mental model / decision rule / checklist this brief delivers>
+    > **Thesis:** <one sharp sentence stating the non-obvious lesson the founder walks away with; written as the founder's takeaway, not a company observation>
+    > **Founder's takeaway (Monday-morning action):** <the one concrete thing the founder should DO after consuming this brief — a ratio to run, a question to ask, a decision to make, a doc to write>
 
-    **Audience:** <specific subaudience, e.g. "Pre-seed B2B SaaS founders negotiating their first cap table">
-    **Why now:** <what makes this timely THIS WEEK; cite the source date>
+    **Audience:** <specific founder subsegment, e.g. "Pre-seed B2B SaaS founders negotiating their first cap table">
+    **Why this concept is timely this week:** <what news / pattern in the ecosystem signals this concept is on founders' minds — but the brief is NOT a news report, it's the framework>
     **Format:** Carousel
     **Specs:** 8-10 slides | 4:5 | Slide 1 hook | 5-7 hashtags
-    **Fact-check:** <Verified | Evergreen | Unverified> — <one-sentence note>
+    **Fact-check:** <Verified | Evergreen — tactical framework, not news-anchored | Unverified> — <one-sentence note>
 
     ### Sources
     - [<title>](<real upstream url>) — <source name>
@@ -204,48 +201,48 @@ generate_carousel_brief:
 
     ---
 
-    #### Slide 3 · Lesson 1 — Co1's approach (non-obvious second-order insight)
-    - **Visual concept:** <name Co1 — a different company than Slides 4 and 5 — and show its approach to the concept; lower-third stat card with the relevant number>
+    #### Slide 3 · Step 1 / Principle 1 / Sign 1 of the framework
+    - **Visual concept:** <literal visual content — what's on screen, layout, iconography, any data viz; the slide teaches the FIRST element of the framework, e.g. "Sign #1: your CAC payback period quietly stretched past 12 months">
     - **Design:** <hex · type · layout>
-    - **Headline (≤8 words):** "<the LESSON, not the company name>"
-    - **Sub / body text:** "<the non-obvious takeaway: e.g. what their approach REVEALS about the concept, not just what they did>"
-    - **Source credit:** <...>
+    - **Headline (≤8 words):** "<the first step / principle / sign — phrased as something the founder does or notices>"
+    - **Sub / body text:** "<the actionable detail: the ratio, the question, the test the founder runs>"
+    - **(Optional) Light evidence:** <ONLY if naming a company genuinely strengthens this point in 1 line — otherwise skip>
 
     ---
 
-    #### Slide 4 · Lesson 2 — Co2's contrasting approach
-    - **Visual concept:** <name Co2 — DIFFERENT from Slide 3 and Slide 5 — show their contrasting approach to the same concept>
+    #### Slide 4 · Step 2 / Principle 2 / Sign 2
+    - **Visual concept:** <next element of the framework; literal scene>
     - **Design:** <...>
-    - **Headline (≤8 words):** "<the lesson>"
-    - **Sub / body text:** "<the contrast — what their path teaches that Co1's didn't>"
-    - **Source credit:** <...>
+    - **Headline (≤8 words):** "<the second step / principle>"
+    - **Sub / body text:** "<concrete actionable detail>"
+    - **(Optional) Light evidence:** <skip by default>
 
     ---
 
-    #### Slide 5 · Lesson 3 — Co3's edge case (the uncanny one)
-    - **Visual concept:** <name Co3 — DIFFERENT from Slides 3 and 4 — show the edge case or exception that breaks the obvious pattern>
+    #### Slide 5 · Step 3 / Principle 3 / Sign 3 — the non-obvious one
+    - **Visual concept:** <this is the uncanny / contrarian slide; the one the founder couldn't get from any obvious source>
     - **Design:** <...>
-    - **Headline (≤8 words):** "<the edge-case lesson>"
-    - **Sub / body text:** "<why this exception MATTERS for founders applying the concept>"
-    - **Source credit:** <...>
+    - **Headline (≤8 words):** "<the non-obvious step / principle>"
+    - **Sub / body text:** "<the second-order or third-order insight; the screenshot-worthy line>"
+    - **(Optional) Light evidence:** <skip by default>
 
     ---
 
-    #### Slide 6 · The pattern (synthesise across the 3 companies)
-    - **Visual concept:** <2x2 or 3-column comparison summarising what Co1/Co2/Co3 share AND differ on; this is the synthesis slide>
+    #### Slide 6 · Step 4 / Principle 4 / Sign 4
+    - **Visual concept:** <next element>
     - **Design:** <...>
-    - **Headline (≤8 words):** "<the synthesis statement>"
-    - **Sub / body text:** "<the third-order observation: what the pattern across all 3 signals about the ecosystem>"
-    - **Source credit:** <...>
+    - **Headline (≤8 words):** "<...>"
+    - **Sub / body text:** "<concrete actionable detail>"
+    - **(Optional) Light evidence:** <skip by default>
 
     ---
 
-    #### Slide 7 · The contrarian read (what most founders WILL conclude vs what they SHOULD)
-    - **Visual concept:** <this is the screenshot-able, save-able slide; design for clarity; could be a 2-column "What you think / What's actually true">
+    #### Slide 7 · Step 5 / Principle 5 / Sign 5 — the contrarian / screenshot slide
+    - **Visual concept:** <design for clarity; this is the slide founders screenshot and send to a co-founder; consider 2-column "What founders THINK / What's actually TRUE">
     - **Design:** <...>
-    - **Headline (≤8 words):** "<the contrarian framing>"
-    - **Sub / body text:** "<the screen-shottable insight that survives independent of the post>"
-    - **Source credit:** <...>
+    - **Headline (≤8 words):** "<the contrarian framing of the final element>"
+    - **Sub / body text:** "<the line that survives independent of the post>"
+    - **(Optional) Light evidence:** <skip by default>
 
     ---
 
@@ -358,23 +355,22 @@ generate_carousel_brief:
 
     **HARD RULES:**
     - Output exactly ONE brief block, the carousel.
-    - **CONCEPT-LED, NOT COMPANY-LED.** The Brief title and thesis name a STARTUP CONCEPT (from the agent's Concept Menu). NEVER use a company name as the brief subject. "Razorpay's playbook" = automatic rewrite. "Capital efficiency at Series D — what Razorpay, Setu, Hasura reveal" = correct.
-    - **MULTI-COMPANY DIVERSITY (enforced):** ≥ 3 DIFFERENT Indian companies illustrate the concept across the brief. NO single company appears in more than 40% of slides (e.g. ≤ 4 of 9 slides). Slides 3, 4, 5 each anchor to a DIFFERENT named company. Slide 6 synthesises all three.
-    - **FRESH > FAMOUS.** Prefer Tavily-surfaced fresh names (Setu, M2P, Hasura, Capillary, Sarvam, Plivo, Rupifi, Vymo, Niro, GoKwik, Krutrim, etc.) over the famous-5 (Razorpay/Zoho/BharatPe/Cred/Freshworks). If your draft names ONLY famous-5, swap at least 2.
-    - **UNCANNY-INSIGHT TEST.** Every slide teaches a non-obvious lesson — second-order, third-order, or contrarian. If the line could be inferred from the source headline alone, rewrite. "Razorpay raised ₹800 Cr" = recap, not lesson. "₹500 Cr+ Indian Series D rounds now bake in 20–30% secondary tranches — founders sell down quietly even as the round optically validates them" = lesson.
-    - **Slide Blueprint uses per-slide BLOCKS, not a markdown table.** ≥ 9 slide blocks (Slide 1 Hook through Slide 9 CTA), each with all 5 labelled fields filled. NEVER output the slide blueprint as a `| pipe | table |`.
-    - Every "Visual concept" is 2–3 sentences of literal content with named real specifics. Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 layout note.
-    - **URL DISCIPLINE:** Cite ONLY URLs that appear character-for-character in the upstream RankedTopic.items context. NEVER invent. NEVER reconstruct. NEVER use a homepage as stand-in. If no usable URL: omit Sources block, mark fact_check = "Evergreen". 404s destroy credibility — empty Sources beats broken Sources.
+    - **CONCEPT-LED, FOUNDER-FOCUSED.** The brief title is a tactical framework name ("5 signs your runway model is lying to you", not "Razorpay's playbook"). The subject is the founder's reasoning. The brief is the framework / checklist / decision rule, not a company case study.
+    - **COMPANIES ARE OPTIONAL FLAVOUR.** Default to zero company names. Maximum 1–2 light references across the entire brief if a company genuinely strengthens a tactical point. NO slide is "about" a company. NO minimum-companies rule.
+    - **UNCANNY-INSIGHT TEST.** Every slide teaches a non-obvious lesson — second-order, third-order, or contrarian. If a founder could infer the line from a 30-second skim of any obvious source, rewrite. Slides 3–7 are the framework's 5 elements (steps / principles / signs / questions / moves) — each a distinct, actionable, non-obvious insight.
+    - **Slide Blueprint uses per-slide BLOCKS, not a markdown table.** ≥ 9 slide blocks (Slide 1 Hook through Slide 9 CTA), each with all labelled fields filled. NEVER output the slide blueprint as a `| pipe | table |`.
+    - Every "Visual concept" is 2–3 sentences of literal content. Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 layout note.
+    - **URL DISCIPLINE:** Cite ONLY URLs verbatim from upstream RankedTopic.items. NEVER invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content; mark fact_check = "Evergreen — tactical framework, not news-anchored." 404s destroy credibility.
     - All 3 caption drafts complete (long 140-180w, medium 60-90w, short ≤30w).
-    - ≥ 3 different named Indian companies, ≥ 2 specific ₹ amounts or percentages, ≥ 1 named framework / playbook / role per brief.
+    - **Specificity floor:** ≥ 1 named framework / mental model / decision rule (give it a name), ≥ 2 concrete specifics (numbers, ratios, ₹ amounts, %, timeframes, role titles, ARR thresholds, headcount markers), ≥ 1 actionable Monday-morning next step. Vague filler ("focus on customers") = automatic rewrite into a concrete diagnostic or ratio.
     - All 5 engagement-playbook components filled with specifics.
     - All 3 hooks + all 4 CTAs filled.
     - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks filled with concrete specifics — no "TBD".
-    - Zero example.com, zero placeholder names, zero motivational filler.
+    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs.
     - Every line passes the like-save-share test, or it gets cut.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". The brief is CONCEPT-LED (title and thesis name a startup concept, not a company; companies illustrated explicitly listed at top). Contains: header strip with Concept being taught + Thesis + Companies illustrated, sources (only verbatim upstream URLs or omitted), 3 hooks with reasoning, a Slide Blueprint built as ≥9 per-slide blocks (NOT a markdown table) where Slides 3–5 each anchor to a DIFFERENT Indian company, Slide 6 synthesises across the 3, Slide 7 lands the contrarian read; every slide teaches a non-obvious lesson; ≥ 3 DIFFERENT Indian companies overall with no single company in more than 40% of slides; fresh Tavily-surfaced names preferred over famous-5. Complete Production Handoff section (4 next actions with owner+deadline, pre-prod, build kit, build day flow, post-build checklist, deliverables, approval gate). Three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders, zero invented URLs.
+    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical framework name; subject is the founder's reasoning, not any company). Contains: header strip with Concept being taught + Thesis + Founder's Monday-morning takeaway + Audience + Why this concept is timely this week, Sources block OPTIONAL (default omitted; only included with verbatim upstream URLs), 3 hooks with reasoning, a Slide Blueprint built as ≥9 per-slide blocks (NOT a markdown table) where Slides 3–7 are the 5 elements of the framework (steps/principles/signs); every slide teaches a non-obvious lesson; companies absent by default — max 1–2 light references across the entire brief and never as a slide subject. Complete Production Handoff section (4 next actions with owner+deadline, pre-prod, build kit, build day flow, post-build checklist, deliverables, approval gate). Three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers / ratios / timeframes, ≥ 1 Monday-morning action. Zero example.com, zero placeholders, zero invented URLs, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -382,32 +378,32 @@ generate_carousel_brief:
 
 generate_reel_part1_brief:
   description: |-
-    Produce **ONE Instagram REEL brief — Part 1 (Setup)** for Indian early-stage SaaS/B2B founders. Pick the topic from the upstream `choose_format` task whose `rubric_match == "Reel — Part 1 (Setup)"`. Apply ALL rules from the agent backstory (Editorial Frame, Concept Menu, Multi-company Diversity, URL discipline).
+    Produce **ONE Instagram REEL brief — Part 1 (Setup)** that surfaces a tactical dilemma early-stage Indian founders face. Pick the topic from the upstream `choose_format` task whose `rubric_match == "Reel — Part 1 (Setup)"`. Apply ALL rules from the agent backstory (Editorial Frame, Concept Menu, Voice Principles, Forbidden Patterns).
 
-    **EDITORIAL FRAME:** This brief is CONCEPT-LED, not COMPANY-LED. Name the startup concept being taught at the top. Illustrate it across ≥ 3 DIFFERENT Indian companies — not a single-company case study. The two-reel arc covers ONE concept progressively (Part 1 sets up the dilemma; Part 2 delivers the framework that resolves it).
+    **EDITORIAL FRAME:** The upstream topic is a SIGNAL — a reason this concept is timely THIS WEEK — not a subject. Use the topic to pick ONE concept from the Concept Menu the founders most need right now. The two-reel arc covers ONE concept progressively (Part 1 surfaces the dilemma; Part 2 delivers the framework that resolves it). The subject is the founder's reasoning, not any company.
 
-    **FRESH > FAMOUS:** Prefer Tavily-surfaced fresh names (Setu, M2P, Hasura, Capillary, Sarvam, Plivo, Rupifi, Vymo, Niro, GoKwik, etc.) over the famous-5 (Razorpay / Zoho / BharatPe / Cred / Freshworks). Famous-5 only when the cluster legitimately centres on them.
+    **Companies — strict rules:** DEFAULT zero company names. Up to 1–2 light references across the brief if naming a company genuinely strengthens a tactical point. Never as the subject of a shot. NO minimum-companies rule.
 
-    **URL DISCIPLINE:** Cite ONLY URLs that appear character-for-character in upstream RankedTopic.items context. NEVER invent, NEVER reconstruct, NEVER use a homepage as stand-in. If no usable URL: omit Sources, mark fact_check = "Evergreen". 404s kill credibility — empty Sources beats broken Sources.
+    **URL DISCIPLINE:** Cite ONLY URLs verbatim from upstream RankedTopic.items context. NEVER invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content; mark fact_check = "Evergreen — tactical framework."
 
-    **Part 1 narrative role:** SETUP. Surface the tension, name the dilemma, plant the question. End the final shot with an explicit teaser for Part 2 ("Tomorrow: the 3 numbers that decide it.").
+    **Part 1 narrative role:** SETUP. Surface the tension, name the dilemma, plant the question the founder can't unsee. End the final shot with an explicit teaser for Part 2 ("Tomorrow: the 4 questions that decide it.").
 
-    **UNCANNY-INSIGHT TEST:** Every shot must teach a non-obvious lesson the founder couldn't infer from the headline alone. Avoid recap-level facts; aim for the second-order or third-order observation.
+    **UNCANNY-INSIGHT TEST:** Every shot teaches a non-obvious observation about the dilemma the founder couldn't get from any obvious source — second-order, third-order, or contrarian.
 
     **Story Blueprint design philosophy:** This is the centerpiece of the brief. A non-technical founder must be able to read it and visualise the reel cut by cut without asking a question. Every shot gets its own block with eight labelled fields — story beat, camera, scene, design, sticker, voiceover, emotion, transition. Specific named props, real Indian B-roll references, hex colours, lens choices, frame counts. NO single-sentence shots.
 
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
     ```
-    ## Brief #2: <Concept name — Part 1: Setup>
+    ## Brief #2: <Tactical dilemma title — Part 1: Setup> (e.g. "When to fire your first sales hire — Part 1: the 4 quiet signals")
 
     > **Concept being taught:** <named concept from the Concept Menu — same concept Part 2 will pay off>
-    > **Thesis:** <one sharp sentence stating the non-obvious dilemma this reel surfaces — framed as Part 1 of a 2-reel arc>
-    > **Companies illustrated (3+, each different):** <Co1 · Co2 · Co3> — fresh Tavily-surfaced names preferred.
+    > **Thesis:** <one sharp sentence stating the non-obvious dilemma this reel surfaces; written as the founder's question, not a company observation>
+    > **Founder's reflection question:** <the question the founder should sit with after watching, e.g. "Is your sales hire under-performing because of them, or because of where you are on the ARR curve?">
 
-    **Audience:** <specific subaudience> · **Why now:** <what makes this timely THIS WEEK; cite source date>
+    **Audience:** <specific founder subsegment> · **Why this concept is timely this week:** <what signal in the ecosystem made you pick this concept now>
     **Format:** Reel — Part 1 (Setup) · **Specs:** 6 shots × 30–45s · 9:16 · Hook in first 1.5s · Final shot = Part 2 teaser
-    **Fact-check:** <Verified | Evergreen | Unverified> — <one-line note>
+    **Fact-check:** <Verified | Evergreen — tactical framework | Unverified> — <one-line note>
 
     ### Sources
     - [<title>](<real upstream url>) — <source name>
@@ -576,24 +572,23 @@ generate_reel_part1_brief:
 
     **HARD RULES:**
     - Output exactly ONE brief block, the Reel Part 1.
-    - **CONCEPT-LED, NOT COMPANY-LED.** Brief title and thesis name a CONCEPT, not a company. "<Co>'s playbook" = automatic rewrite.
-    - **MULTI-COMPANY DIVERSITY:** ≥ 3 DIFFERENT Indian companies illustrate the concept across the 6 shots. NO single company carries more than 40% of the shots.
-    - **FRESH > FAMOUS.** Prefer Tavily-surfaced fresh names over the famous-5. If draft names ONLY famous-5, swap at least 2.
-    - **UNCANNY-INSIGHT TEST.** Every shot teaches a non-obvious lesson — second-order, third-order, or contrarian. Headline-recap = automatic rewrite.
-    - **URL DISCIPLINE.** Cite ONLY URLs verbatim from upstream context. Never invent, reconstruct, or use a homepage stand-in. If no usable URL: omit Sources, mark Evergreen.
+    - **CONCEPT-LED, FOUNDER-FOCUSED.** Brief title is a tactical dilemma, not a company. The subject is the founder's reasoning.
+    - **COMPANIES ARE OPTIONAL FLAVOUR.** Default zero company names. Max 1–2 light references across the brief; never as the subject of a shot. NO minimum-companies rule.
+    - **UNCANNY-INSIGHT TEST.** Every shot teaches a non-obvious observation about the dilemma — second-order, third-order, or contrarian. Headline-recap = automatic rewrite.
+    - **URL DISCIPLINE.** Cite ONLY URLs verbatim from upstream context. Never invent, reconstruct, or use a homepage stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content.
     - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
     - Final shot's sticker AND voiceover both EXPLICITLY reference Part 2.
     - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
-    - Every "Scene" line names at least one specific real prop, location, or B-roll reference.
+    - Every "Scene" line names at least one specific real prop, location, or B-roll reference (no company name required — props can be a Notion doc, a cap-table screenshot, a whiteboard, a monitor showing a Stripe dashboard, etc.).
     - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
     - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks filled with concrete specifics.
     - All 3 caption drafts complete and end teasing Part 2.
-    - ≥ 3 different named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework across the brief.
+    - **Specificity floor:** ≥ 1 named framework / mental model / decision rule, ≥ 2 concrete specifics (numbers, ratios, ₹ amounts, %, timeframes, role titles), ≥ 1 actionable founder reflection or move.
     - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
-    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs.
+    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs, zero company-as-subject framing.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), the final shot explicitly teasing Part 2, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-prod checklist, shoot kit, shoot day flow, post-prod checklist, deliverables, approval gate — every sub-block concrete with named gear/time-boxes/file specs). Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block (audio + post window + cross-promo), and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical dilemma, not a company; subject is the founder's reasoning). Contains: compact header strip with Concept being taught + Thesis + Founder's reflection question, Sources block OPTIONAL (default omitted), 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); final shot explicitly teases Part 2; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 actionable founder reflection. Zero example.com, zero placeholders, zero invented URLs, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -601,17 +596,17 @@ generate_reel_part1_brief:
 
 generate_reel_part2_brief:
   description: |-
-    Produce **ONE Instagram REEL brief — Part 2 (Payoff)** for Indian early-stage SaaS/B2B founders. Pick the topic from the upstream `choose_format` task whose `rubric_match == "Reel — Part 2 (Payoff)"`. Apply ALL rules from the agent backstory (Editorial Frame, Concept Menu, Multi-company Diversity, URL discipline).
+    Produce **ONE Instagram REEL brief — Part 2 (Payoff)** that delivers a tactical framework resolving Part 1's dilemma. Pick the topic from the upstream `choose_format` task whose `rubric_match == "Reel — Part 2 (Payoff)"`. Apply ALL rules from the agent backstory (Editorial Frame, Concept Menu, Voice Principles, Forbidden Patterns).
 
-    **EDITORIAL FRAME:** This brief is CONCEPT-LED, not COMPANY-LED. Same concept as Part 1, now in PAYOFF mode. Illustrate it across ≥ 3 DIFFERENT Indian companies — Shots 3, 4, 5 each anchor to a DIFFERENT company. The brief teaches a non-obvious framework, not a company case study.
+    **EDITORIAL FRAME:** Same concept as Part 1, now in PAYOFF mode. The brief teaches a tactical framework / decision rule / 3-step diagnostic the founder can apply Monday morning. The subject is the founder's reasoning, not any company.
 
-    **FRESH > FAMOUS:** Prefer Tavily-surfaced fresh names over the famous-5. Famous names only when the cluster legitimately centres on them.
+    **Companies — strict rules:** DEFAULT zero company names. Up to 1–2 light references across the brief if a company genuinely strengthens a tactical point. Never as the subject of a shot. NO minimum-companies rule. Shots 3/4/5 deliver the 3 elements of the framework — those elements are PRINCIPLES / RATIOS / DECISION CRITERIA, not company examples.
 
-    **URL DISCIPLINE:** Cite ONLY URLs that appear character-for-character in upstream RankedTopic.items context. NEVER invent, NEVER reconstruct, NEVER use a homepage as stand-in. If no usable URL: omit Sources, mark fact_check = "Evergreen". 404s kill credibility.
+    **URL DISCIPLINE:** Cite ONLY URLs verbatim from upstream context. NEVER invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content.
 
-    **Part 2 narrative role:** PAYOFF. Open by acknowledging Part 1 ("Yesterday I asked..."). Deliver the framework / numbers / contrarian take that resolves Part 1's tension. Reference Part 1 in caption + pinned comment.
+    **Part 2 narrative role:** PAYOFF. Open by acknowledging Part 1 ("Yesterday I asked..."). Deliver the 3-element framework that resolves Part 1's tension. Reference Part 1 in caption + pinned comment.
 
-    **UNCANNY-INSIGHT TEST:** Every shot teaches a non-obvious lesson — second-order, third-order, or contrarian. The framework you reveal in Shots 3/4/5 is the lesson; the company in each shot is the illustration.
+    **UNCANNY-INSIGHT TEST:** Every shot teaches a non-obvious lesson — second-order, third-order, or contrarian. Shots 3/4/5 each deliver one non-obvious element of the framework (a ratio to run, a question to ask, a decision rule, a diagnostic), NOT a company example.
 
     **Read Part 1's brief from upstream context** (`generate_reel_part1_brief`) — your opening voiceover and caption must callback Part 1's SPECIFIC question / framing. Do NOT write a generic "Yesterday I asked..." — quote or paraphrase Part 1's actual setup line. The reader of Part 2 must feel a clean handoff from yesterday's reel.
 
@@ -620,15 +615,15 @@ generate_reel_part2_brief:
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
     ```
-    ## Brief #3: <Concept name — Part 2: Payoff>
+    ## Brief #3: <Tactical framework title — Part 2: Payoff> (e.g. "When to fire your first sales hire — Part 2: the 3-question gut check")
 
     > **Concept being taught:** <same concept as Part 1; this reel delivers the framework that resolves Part 1's tension>
-    > **Thesis:** <one sharp sentence framing the framework / contrarian take this reel delivers>
-    > **Companies illustrated (3+, each different):** <Co1 · Co2 · Co3 — different from each other; ideally a mix that overlaps with Part 1 partially, varies partially>
+    > **Thesis:** <one sharp sentence framing the 3-element framework / decision rule this reel delivers as the founder's takeaway>
+    > **Founder's takeaway (Monday-morning action):** <the concrete thing the founder does after watching — the ratio to run, the question to ask, the doc to write>
 
-    **Audience:** <specific subaudience> · **Why now:** <timeliness; reference Part 1 cadence>
+    **Audience:** <specific founder subsegment> · **Why this concept is timely this week:** <timeliness signal; reference Part 1 cadence>
     **Format:** Reel — Part 2 (Payoff) · **Specs:** 6 shots × 30–45s · 9:16 · Shot 1 = explicit Part 1 callback · Final shot = framework summary + DM trigger
-    **Fact-check:** <Verified | Evergreen | Unverified> — <one-line note>
+    **Fact-check:** <Verified | Evergreen — tactical framework | Unverified> — <one-line note>
 
     ### Sources
     - [<title>](<real upstream url>) — <source name>
@@ -642,7 +637,7 @@ generate_reel_part2_brief:
 
     **Dramatic arc (3 lines):**
     1. <opening — explicit callback to Part 1's question>
-    2. <middle — the framework / numbers / contrarian take that resolves Part 1>
+    2. <middle — the 3 elements of the framework: ratio / question / decision rule per element>
     3. <closing — DM trigger and follow CTA>
 
     **Runtime:** 32–40s across 6 shots · Pacing: 4–7s cuts, slowest at the framework reveal · Aspect: 9:16 vertical · Captions burned-in.
@@ -673,37 +668,37 @@ generate_reel_part2_brief:
 
     ---
 
-    #### Shot 3 · 9.0–16.0s · Framework reveal — beat 1
-    - **Story beat:** First of 3 framework beats. Slow the cut here so it lands.
+    #### Shot 3 · 9.0–16.0s · Framework element 1 (the first non-obvious move)
+    - **Story beat:** First of 3 framework elements. Slow the cut here so it lands. The element is a specific tactical move, ratio, or question — NOT a company example.
     - **Camera:** <...>
-    - **Scene:** <name a specific real Indian company example — e.g. "Whatfix's 2018 Series A reportedly closed at ₹X / Cr ARR; show on lower-third stat card.">
+    - **Scene:** <literal scene supporting element 1 — could be a Notion doc reveal, a whiteboard ratio, a phone screen showing a Stripe dashboard, the founder writing a number — props/B-roll that visualise the element, no company name required>
     - **Design:** <...>
-    - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Sticker (≤6 words):** "<the element name in ≤6 words>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<the founder-to-founder explanation of the element + when to apply it>"
     - **Emotion:** Confidence
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 4 · 16.0–22.0s · Framework reveal — beat 2
-    - **Story beat:** <...>
+    #### Shot 4 · 16.0–22.0s · Framework element 2 (the second non-obvious move)
+    - **Story beat:** <name what this element adds to element 1>
     - **Camera:** <...>
-    - **Scene:** <name a different real Indian company example>
+    - **Scene:** <literal scene for element 2 — different visual texture from Shot 3>
     - **Design:** <...>
-    - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Sticker (≤6 words):** "<the element name>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<the explanation>"
     - **Emotion:** <...>
     - **Transition out:** <...>
 
     ---
 
-    #### Shot 5 · 22.0–28.0s · Framework reveal — beat 3 / payoff
-    - **Story beat:** Land the third beat with the contrarian / counter-intuitive line. This is the most save-able sentence of the reel.
+    #### Shot 5 · 22.0–28.0s · Framework element 3 (the contrarian / screenshot one)
+    - **Story beat:** Land the third element with the contrarian / counter-intuitive line. This is the most save-able sentence of the reel — the line founders will screenshot and send to a co-founder.
     - **Camera:** <...>
-    - **Scene:** <name the third real Indian company example>
+    - **Scene:** <literal scene for element 3 — could be a 2-column "What founders THINK / What's actually TRUE" lower-third>
     - **Design:** <...>
-    - **Sticker (≤6 words):** "<...>"
-    - **Voiceover (1–3 sentences, ≠ sticker):** "<the line viewers will screenshot>"
+    - **Sticker (≤6 words):** "<the contrarian element>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<the screenshot-able line>"
     - **Emotion:** Reveal
     - **Transition out:** <...>
 
@@ -800,24 +795,23 @@ generate_reel_part2_brief:
 
     **HARD RULES:**
     - Output exactly ONE brief block, the Reel Part 2.
-    - **CONCEPT-LED, NOT COMPANY-LED.** Brief title and thesis name a CONCEPT, not a company.
-    - **MULTI-COMPANY DIVERSITY:** Shots 3, 4, 5 each anchor to a DIFFERENT specific real Indian company with a number attached. ≥ 3 different companies overall; no single company > 40% of shots.
-    - **FRESH > FAMOUS.** Prefer Tavily-surfaced fresh names over the famous-5. If draft names ONLY famous-5, swap at least 2.
-    - **UNCANNY-INSIGHT TEST.** Every shot teaches a non-obvious lesson. The framework you reveal in Shots 3/4/5 must be the second-order observation, not the headline recap.
-    - **URL DISCIPLINE.** Cite ONLY URLs verbatim from upstream context. Never invent, reconstruct, or use a homepage stand-in. If no usable URL: omit Sources, mark Evergreen.
+    - **CONCEPT-LED, FOUNDER-FOCUSED.** Brief title is a tactical framework name, not a company. Subject is the founder's reasoning.
+    - **COMPANIES ARE OPTIONAL FLAVOUR.** Default zero company names. Max 1–2 light references across the brief; never as the subject of a shot. Shots 3/4/5 deliver framework ELEMENTS (ratios / questions / decision rules), NOT company examples.
+    - **UNCANNY-INSIGHT TEST.** Every shot teaches a non-obvious lesson. Shots 3/4/5 each deliver a non-obvious framework element — second-order, third-order, or contrarian.
+    - **URL DISCIPLINE.** Cite ONLY URLs verbatim from upstream context. Never invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT.**
     - Shot 1 sticker AND voiceover EXPLICITLY callback Part 1's specific question (paraphrase from upstream Part 1 context — do NOT write a generic callback).
     - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
     - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
-    - Every "Scene" line names at least one specific real prop, location, or B-roll reference.
+    - Every "Scene" line names at least one specific real prop, location, or B-roll reference (no company name required — props can be a Notion doc, a Stripe dashboard screen, a whiteboard ratio, a cap-table screenshot).
     - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
     - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks (with Part 1 continuity, grade-match QA, DM-trigger-live check) filled with concrete specifics.
     - All 3 caption drafts complete; each opens with a Part 1 callback that paraphrases Part 1's actual question (not generic).
-    - ≥ 2 specific numbers, ≥ 1 named framework.
+    - **Specificity floor:** ≥ 1 named framework / decision rule / mental model, ≥ 2 concrete specifics (numbers, ratios, ₹ amounts, %, timeframes, role titles), ≥ 1 actionable Monday-morning move.
     - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
-    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs.
+    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs, zero company-as-subject framing.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), Shot 1 explicitly paraphrasing Part 1's actual question (read from upstream context), Shots 3/4/5 each naming a different real Indian company example with a number, the final shot naming the DM trigger word, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-prod with Part 1 continuity, shoot kit matching Part 1, shoot day flow, post-prod with grade-match QA, deliverables including the DM-trigger asset, approval gate including DM-trigger-live check). Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical framework, not a company). Contains: compact header strip with Concept being taught + Thesis + Founder's Monday-morning takeaway, Sources block OPTIONAL (default omitted), 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); Shot 1 explicitly paraphrases Part 1's actual question; Shots 3/4/5 each deliver one element of the framework (ratio / question / decision rule / diagnostic — NOT a company example); the final shot names the DM trigger word; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section (with Part 1 continuity, grade-match QA, DM-trigger-live check). Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 Monday-morning action. Zero example.com, zero placeholders, zero invented URLs, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
