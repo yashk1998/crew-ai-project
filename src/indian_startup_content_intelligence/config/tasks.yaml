@@ -239,6 +239,8 @@ generate_reel_part1_brief:
 
     **Part 1 narrative role:** SETUP. Surface the tension, name the dilemma, plant the question. End the final shot with an explicit teaser for Part 2 ("Tomorrow: the 3 numbers that decide it.").
 
+    **Story Blueprint design philosophy:** This is the centerpiece of the brief. A non-technical founder must be able to read it and visualise the reel cut by cut without asking a question. Every shot gets its own block with eight labelled fields — story beat, camera, scene, design, sticker, voiceover, emotion, transition. Specific named props, real Indian B-roll references, hex colours, lens choices, frame counts. NO single-sentence shots.
+
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
     ```
@@ -246,92 +248,142 @@ generate_reel_part1_brief:
 
     > **Thesis:** <one sharp sentence on why this content exists, framed as Part 1 of a 2-reel arc>
 
-    **Audience:** <specific subaudience>
-    **Why now:** <what makes this timely THIS WEEK; cite the source date>
-    **Format:** Reel — Part 1 (Setup)
-    **Specs:** 5-7 shots × 30-45s total | 9:16 | Hook in first 1.5s | Final shot = explicit teaser for Part 2
-    **Fact-check:** <Verified | Evergreen | Unverified> — <note>
+    **Audience:** <specific subaudience> · **Why now:** <what makes this timely THIS WEEK; cite source date>
+    **Format:** Reel — Part 1 (Setup) · **Specs:** 6 shots × 30–45s · 9:16 · Hook in first 1.5s · Final shot = Part 2 teaser
+    **Fact-check:** <Verified | Evergreen | Unverified> — <one-line note>
 
     ### Sources
     - [<title>](<real upstream url>) — <source name>
 
-    ### Hooks
-    **A · Specific number / loss-aversion** — <hook text, ≤15 words>
-      _Why it works: <1 sentence tagged to "watch_time">_
-    **B · Contrarian-but-defensible** — <hook text>
-      _Why it works: <1 sentence>_
-    **C · Insider language / pattern recognition** — <hook text>
-      _Why it works: <1 sentence>_
+    ### Hooks (3 angles)
+    - **A · Specific number / loss-aversion** — "<hook text, ≤15 words>" _(why it works: <1 sentence on watch_time>)_
+    - **B · Contrarian-but-defensible** — "<hook text>" _(why: <1 sentence>)_
+    - **C · Insider language / pattern recognition** — "<hook text>" _(why: <1 sentence>)_
 
-    ### Shot Blueprint
-    | # | Shot | Visual + Design | On-screen sticker (≤6 words) | Voiceover (1-3 sentences, ≠ sticker) | Transition |
-    |---|---|---|---|---|---|
-    | 1 | Shot 1 | <visual hook in <1.5s — face / motion / text reveal; design notes> | <sticker> | <conversational founder-to-founder voiceover, MUST DIFFER from sticker, ends with tease pulling to next shot> | <whip / cut / match-cut> |
-    | 2 | Shot 2 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 3 | Shot 3 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 4 | Shot 4 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 5 | Shot 5 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 6 | Shot 6 | <visual; final shot — explicit teaser for Part 2> | <sticker, e.g. "Tomorrow: Part 2"> | <voiceover that previews Part 2 specifically: e.g. "Tomorrow I'll show you the 3 numbers that decide which side wins."> | end |
+    ### Story Blueprint
 
-    **Voiceover discipline:** Every voiceover line MUST DIFFER from its on-screen sticker. The sticker is ≤6 words; the voiceover is 1-3 conversational sentences. Each voiceover ends with a tease pulling to the next shot. Final shot's voiceover EXPLICITLY previews Part 2.
+    **Dramatic arc (3 lines):**
+    1. <opening beat — what tension surfaces in the first 4 seconds>
+    2. <middle escalation — how the stakes raise>
+    3. <closing beat — the unresolved question that hands off to Part 2>
+
+    **Runtime:** 32–40s across 6 shots · Pacing: 4–7s cuts, tightest around the reveal · Aspect: 9:16 vertical · Captions burned-in (97% watch with sound off in IST mornings).
+
+    ---
+
+    #### Shot 1 · 0.0–4.0s · Hook (Pattern interrupt)
+    - **Story beat:** <1 line: what this shot does narratively — e.g. "Name the founder's hidden anxiety in the first 2 seconds so the algorithm holds the watch.">
+    - **Camera:** <lens · framing · angle · height · light direction — e.g. "35mm equivalent, tight close-up, slight Dutch angle for unease, phone at chest height, soft window light from camera-right.">
+    - **Scene:** <2–3 lines of literal visual content — wardrobe, props, location, B-roll cut-ins. Name real assets if relevant. e.g. "Founder in plain crew-neck tee, mid-30s, seated in coworking space (BHIVE Bengaluru aesthetic). Cut-in B-roll: Slack screenshot showing investor reply 'Let's revisit in Q3', overlaid with timestamp.">
+    - **Design:** <hex colours · typography · sticker motion · grain — e.g. "Ink #0A0A0A on bone #F5F1E8. Inter Display 800 for sticker, SemiBold for body. Sticker snap-in 12-frame ease-out. 8% film grain.">
+    - **Sticker (≤6 words):** "<sticker text>"
+    - **Voiceover (1–3 sentences, MUST differ from sticker):** "<conversational founder-to-founder voice; specific not generic; ends pulling into shot 2>"
+    - **Emotion:** <Tension | Curiosity | Confrontation | Confidence | Calm>
+    - **Transition out:** <e.g. "Whip-pan right, 6-frame motion blur" or "Match-cut on phone screen" or "Hard cut">
+
+    ---
+
+    #### Shot 2 · 4.0–9.0s · Stakes
+    - **Story beat:** <...>
+    - **Camera:** <...>
+    - **Scene:** <...>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** <...>
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 3 · 9.0–15.0s · Tension build
+    - **Story beat:** <...>
+    - **Camera:** <...>
+    - **Scene:** <...>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** <...>
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 4 · 15.0–22.0s · The dilemma
+    - **Story beat:** <...>
+    - **Camera:** <...>
+    - **Scene:** <...>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** <...>
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 5 · 22.0–30.0s · Cliffhanger
+    - **Story beat:** <...>
+    - **Camera:** <...>
+    - **Scene:** <...>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** <...>
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 6 · 30.0–35.0s · Part 2 teaser (final)
+    - **Story beat:** Hand off to Part 2. Name what Part 2 will reveal so the viewer needs to come back tomorrow.
+    - **Camera:** <e.g. "Close-up on hand sliding cap-table doc out of frame; cut to founder eye-line, full-frontal locked-off shot.">
+    - **Scene:** <visual that signals "to be continued" — calendar showing tomorrow's date, "Part 2" lower-third, etc.>
+    - **Design:** <colours, typography, sticker motion, end-card layout>
+    - **Sticker (≤6 words):** "Tomorrow: Part 2 ↓" _(or topic-specific equivalent)_
+    - **Voiceover (1–3 sentences, ≠ sticker, MUST explicitly preview Part 2):** "<e.g. 'Tomorrow I'll show you the 3 numbers from Razorpay's last raise that decide which side wins.'>"
+    - **Emotion:** Anticipation
+    - **Transition out:** End-card hold for 1.0s.
 
     ### Captions (3 drafts)
+    **Long (140–180w):** <story-led; first line survives "Read More" cut at ~125 chars; ends teasing Part 2>
+    **Medium (60–90w):** <punchier; ends teasing Part 2>
+    **Short (≤30w):** <pure hook + CTA + Part 2 tease>
 
-    **Long (140-180 words):**
-    > <story-led primary caption; first line survives "Read More" cut; ends teasing Part 2>
-
-    **Medium (60-90 words):**
-    > <punchier; ends teasing Part 2>
-
-    **Short (≤30 words):**
-    > <pure hook + CTA + Part 2 tease>
-
-    ### Hashtags (tiered, 5-7 total, no #)
-    - **Broad (1-2):** <...>
-    - **Niche (2-3):** <...>
-    - **Community / branded (1):** <...>
-    - **Trend (0-1):** <only if legit; else omit>
+    ### Hashtags (5–7 total, no #)
+    - **Broad (1–2):** <...>  ·  **Niche (2–3):** <...>  ·  **Community (1):** <...>  ·  **Trend (0–1):** <only if legit>
 
     ### CTAs
     - **Primary:** Watch tomorrow's Part 2 — <reason>.
-    - **Comment-driver:** <specific question that splits the audience, e.g. "Bootstrap or raise? Drop your pick below.">
+    - **Comment-driver:** <specific question that splits the audience, e.g. "Bootstrap or raise? Drop your pick.">
     - **DM-trigger:** <e.g. "DM 'PART2' for the early notification">
     - **Follow:** Follow so Part 2 hits your feed tomorrow.
 
-    ### Audio
-    <real trending sound name + BPM + mood, plus a fallback (trends shift fast)>
-
-    ### Posting Strategy
-    - **Day + time (IST):** <best slot for the topic; e.g. Mon 8:30 AM IST>
-    - **Cross-promo:** Story tease 2-4 hours before with poll sticker.
-    - **Sequencing:** Part 1 publishes 24h before Part 2. Pin Part 2 link in Part 1's pinned comment as soon as Part 2 goes live.
+    ### Production & Distribution
+    - **Audio:** <real trending sound name + BPM + mood> · Fallback: <fallback sound + BPM>
+    - **Post window (IST):** <e.g. Mon 8:30 AM IST — pre-stand-up scroll>
+    - **Cross-promo:** Story tease 2–4h before with poll sticker. Pin Part 2 in Part 1's comments the moment Part 2 publishes.
 
     ### Engagement Playbook (first 60 minutes)
-    - **Pinned comment (verbatim, ≤200 chars):** <Part 2 tease + DM trigger>
-    - **Prepared reply lines (3):**
-      1. Agreement amplifier — <line>
-      2. Gentle disagreement — <line>
-      3. Follow-up question — <line>
-    - **Outbound engagement (3 named accounts):** <accounts>
-    - **Story amplifier (30 min after feed post):** <slide concept + poll/question sticker>
-    - **Follow-up post idea (tomorrow's queue):** Reel Part 2 (Payoff).
+    - **Pinned comment (≤200 chars, verbatim):** "<Part 2 tease + DM trigger>"
+    - **Prepared replies (3):** 1) Agreement amplifier — "<line>"  ·  2) Gentle disagreement — "<line>"  ·  3) Follow-up question — "<line>"
+    - **Outbound engagement (3 accounts):** <e.g. @nithin0dha, @sajithpai, @aviralbhat — comment with substance, not "🔥">
+    - **Story amplifier (T+30min):** <slide concept + poll/question sticker>
+    - **Tomorrow's queue:** Reel Part 2 (Payoff)
 
     ---
     ```
 
     **HARD RULES:**
     - Output exactly ONE brief block, the Reel Part 1.
-    - ≥ 5 shot rows in the table (target 6-7). Every shot a distinct beat.
-    - Final shot is an explicit Part-2 teaser (sticker + voiceover both reference Part 2).
-    - Every voiceover line MUST DIFFER from its sticker.
+    - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
+    - Final shot's sticker AND voiceover both EXPLICITLY reference Part 2.
+    - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
+    - Every "Scene" line names at least one specific real prop, location, or B-roll reference (Indian or globally credible — Notion templates, Razorpay dashboards, BHIVE/91Springboard coworking, real cap-table docs, etc.).
+    - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
     - All 3 caption drafts complete and end teasing Part 2.
-    - ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework.
-    - All 5 engagement-playbook components filled.
-    - All 3 hooks + all 4 CTAs filled.
+    - ≥ 3 named Indian companies, ≥ 2 specific numbers (₹ amounts, %, multiples, headcount), ≥ 1 named framework across the brief.
+    - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
     - Zero example.com, zero placeholder names, zero motivational filler.
-    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence.
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---", containing: thesis, audience, why-now, format=Reel — Part 1 (Setup), specs, fact-check, sources, 3 hooks with reasoning, shot blueprint table with ≥5 rows where the final shot explicitly teases Part 2 and every voiceover differs from its sticker, three caption drafts (each ending with a Part 2 tease), tiered hashtags, multi-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), the final shot explicitly teasing Part 2, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, merged Production & Distribution block, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -345,7 +397,9 @@ generate_reel_part2_brief:
 
     **Part 2 narrative role:** PAYOFF. Open by acknowledging Part 1 ("Yesterday I asked..."). Deliver the framework / numbers / contrarian take that resolves Part 1's tension. Reference Part 1 in caption + pinned comment.
 
-    **Read Part 1's brief from upstream context** (`generate_reel_part1_brief`) — your opening voiceover and caption must callback Part 1's specific question / framing. Do NOT write a generic "Yesterday I asked..." — quote or paraphrase Part 1's actual setup.
+    **Read Part 1's brief from upstream context** (`generate_reel_part1_brief`) — your opening voiceover and caption must callback Part 1's SPECIFIC question / framing. Do NOT write a generic "Yesterday I asked..." — quote or paraphrase Part 1's actual setup line. The reader of Part 2 must feel a clean handoff from yesterday's reel.
+
+    **Story Blueprint design philosophy:** This is the centerpiece of the brief. A non-technical founder must be able to read it and visualise the reel cut by cut without asking a question. Every shot gets its own block with eight labelled fields — story beat, camera, scene, design, sticker, voiceover, emotion, transition. Specific named props, real Indian B-roll references, hex colours, lens choices, frame counts. NO single-sentence shots.
 
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
@@ -354,51 +408,106 @@ generate_reel_part2_brief:
 
     > **Thesis:** <one sharp sentence framing this as the Part 2 payoff to Part 1's setup>
 
-    **Audience:** <specific subaudience>
-    **Why now:** <timeliness; reference Part 1 cadence>
-    **Format:** Reel — Part 2 (Payoff)
-    **Specs:** 5-7 shots × 30-45s total | 9:16 | Shot 1 = "Yesterday I asked..." callback to Part 1 | Final shot = framework summary + DM trigger
-    **Fact-check:** <Verified | Evergreen | Unverified> — <note>
+    **Audience:** <specific subaudience> · **Why now:** <timeliness; reference Part 1 cadence>
+    **Format:** Reel — Part 2 (Payoff) · **Specs:** 6 shots × 30–45s · 9:16 · Shot 1 = explicit Part 1 callback · Final shot = framework summary + DM trigger
+    **Fact-check:** <Verified | Evergreen | Unverified> — <one-line note>
 
     ### Sources
     - [<title>](<real upstream url>) — <source name>
 
-    ### Hooks
-    **A · Specific number / loss-aversion** — <hook, ≤15 words; references Part 1's question>
-      _Why it works: <1 sentence tagged to "watch_time">_
-    **B · Contrarian-but-defensible** — <hook>
-      _Why it works: <1 sentence>_
-    **C · Insider language / pattern recognition** — <hook>
-      _Why it works: <1 sentence>_
+    ### Hooks (3 angles)
+    - **A · Specific number / loss-aversion** — "<hook text, ≤15 words; references Part 1's question>" _(why it works: <1 sentence on watch_time>)_
+    - **B · Contrarian-but-defensible** — "<hook text>" _(why: <1 sentence>)_
+    - **C · Insider language / pattern recognition** — "<hook text>" _(why: <1 sentence>)_
 
-    ### Shot Blueprint
-    | # | Shot | Visual + Design | On-screen sticker (≤6 words) | Voiceover (1-3 sentences, ≠ sticker) | Transition |
-    |---|---|---|---|---|---|
-    | 1 | Shot 1 | <visual; opens with Part 1 callback> | <sticker, e.g. "Yesterday I asked..."> | <voiceover that paraphrases Part 1's specific question, then promises the answer; MUST DIFFER from sticker> | <whip> |
-    | 2 | Shot 2 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 3 | Shot 3 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 4 | Shot 4 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 5 | Shot 5 | <visual> | <sticker> | <voiceover> | <transition> |
-    | 6 | Shot 6 | <visual; final = framework summary + DM trigger> | <sticker, e.g. "DM 'PLAY' for full"> | <voiceover that lands the framework + names the DM trigger> | end |
+    ### Story Blueprint
 
-    **Voiceover discipline:** Every voiceover line MUST DIFFER from its on-screen sticker. The sticker is ≤6 words; the voiceover is 1-3 conversational sentences.
+    **Dramatic arc (3 lines):**
+    1. <opening — explicit callback to Part 1's question>
+    2. <middle — the framework / numbers / contrarian take that resolves Part 1>
+    3. <closing — DM trigger and follow CTA>
+
+    **Runtime:** 32–40s across 6 shots · Pacing: 4–7s cuts, slowest at the framework reveal · Aspect: 9:16 vertical · Captions burned-in.
+
+    ---
+
+    #### Shot 1 · 0.0–4.0s · "Yesterday I asked…" callback
+    - **Story beat:** Re-anchor the viewer in Part 1's question in the first 2 seconds. A fresh viewer who skipped Part 1 must still understand. A return viewer must feel "here it comes."
+    - **Camera:** <e.g. "Tight close-up, locked-off, eye-line; 35mm equivalent; phone at chest height; soft window light camera-right.">
+    - **Scene:** <2–3 lines of literal visual content. MUST include a visual callback to Part 1 — same wardrobe, same location, same prop, OR a frame of Part 1's final shot inset top-right. Name real props/B-roll. e.g. "Founder in same plain crew-neck tee as Part 1, same coworking corner. Bottom third inset shows yesterday's Part 1 final frame for 1.5s.">
+    - **Design:** <hex colours · typography · sticker motion · grain — e.g. "Same palette as Part 1: ink #0A0A0A on bone #F5F1E8. Inter Display 800. Sticker snap-in 12-frame ease-out. Inset frame has 4px ink border.">
+    - **Sticker (≤6 words):** "Yesterday I asked…" _(or topic-specific paraphrase, e.g. "₹2 Cr or break even?")_
+    - **Voiceover (1–3 sentences, MUST differ from sticker, MUST paraphrase Part 1's actual question and promise the answer):** "<e.g. 'Yesterday I asked you whether to take the ₹2 Cr term sheet or stay default-alive. Today I'll show you the 3 numbers from Razorpay's first round that make the call obvious.'>"
+    - **Emotion:** Anticipation / Confidence
+    - **Transition out:** <e.g. "Match-cut from founder's eye-line to whiteboard; 6-frame motion blur">
+
+    ---
+
+    #### Shot 2 · 4.0–9.0s · Reframe / setup the answer
+    - **Story beat:** <name what reframe the viewer needs before the framework lands>
+    - **Camera:** <...>
+    - **Scene:** <...>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** <...>
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 3 · 9.0–16.0s · Framework reveal — beat 1
+    - **Story beat:** First of 3 framework beats. Slow the cut here so it lands.
+    - **Camera:** <...>
+    - **Scene:** <name a specific real Indian company example — e.g. "Whatfix's 2018 Series A reportedly closed at ₹X / Cr ARR; show on lower-third stat card.">
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** Confidence
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 4 · 16.0–22.0s · Framework reveal — beat 2
+    - **Story beat:** <...>
+    - **Camera:** <...>
+    - **Scene:** <name a different real Indian company example>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<...>"
+    - **Emotion:** <...>
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 5 · 22.0–28.0s · Framework reveal — beat 3 / payoff
+    - **Story beat:** Land the third beat with the contrarian / counter-intuitive line. This is the most save-able sentence of the reel.
+    - **Camera:** <...>
+    - **Scene:** <name the third real Indian company example>
+    - **Design:** <...>
+    - **Sticker (≤6 words):** "<...>"
+    - **Voiceover (1–3 sentences, ≠ sticker):** "<the line viewers will screenshot>"
+    - **Emotion:** Reveal
+    - **Transition out:** <...>
+
+    ---
+
+    #### Shot 6 · 28.0–35.0s · Framework summary + DM trigger (final)
+    - **Story beat:** Recap the 3-beat framework in one breath. Name the DM trigger word so saves convert to DMs.
+    - **Camera:** <e.g. "Static eye-line, founder full-frontal; framework recap as lower-third typography reveal, one beat per word.">
+    - **Scene:** <e.g. "End-card: 3 numbered framework beats stack on screen; DM trigger word highlighted in accent colour.">
+    - **Design:** <hex colours, typography reveal motion, end-card layout>
+    - **Sticker (≤6 words):** "DM '<TRIGGER>' for the 1-pager"
+    - **Voiceover (1–3 sentences, ≠ sticker, MUST name the DM trigger):** "<e.g. 'So when the term sheet hits — check ARR, check NRR, check default-alive runway. DM PLAY and I'll send the 1-pager.'>"
+    - **Emotion:** Confidence / Resolution
+    - **Transition out:** End-card hold for 1.0s.
 
     ### Captions (3 drafts)
+    **Long (140–180w):** <opens with "Yesterday I asked..." callback that paraphrases Part 1's actual question, then delivers framework / numbers / contrarian take; first line survives "Read More" cut>
+    **Medium (60–90w):** <punchier; opens with Part 1 callback>
+    **Short (≤30w):** <pure hook + CTA + Part 1 reference>
 
-    **Long (140-180 words):**
-    > <opens with "Yesterday I asked..." callback to Part 1 (paraphrase Part 1's actual question), then delivers the framework / numbers / contrarian take; first line survives "Read More" cut>
-
-    **Medium (60-90 words):**
-    > <punchier; opens with Part 1 callback>
-
-    **Short (≤30 words):**
-    > <pure hook + CTA + Part 1 reference>
-
-    ### Hashtags (tiered, 5-7 total, no #)
-    - **Broad (1-2):** <...>
-    - **Niche (2-3):** <...>
-    - **Community / branded (1):** <...>
-    - **Trend (0-1):** <only if legit; else omit>
+    ### Hashtags (5–7 total, no #)
+    - **Broad (1–2):** <...>  ·  **Niche (2–3):** <...>  ·  **Community (1):** <...>  ·  **Trend (0–1):** <only if legit>
 
     ### CTAs
     - **Primary:** Save the framework — <reason>.
@@ -406,40 +515,36 @@ generate_reel_part2_brief:
     - **DM-trigger:** <e.g. "DM 'PLAY' for the full framework as a 1-pager">
     - **Follow:** Follow for tomorrow's daily breakdown.
 
-    ### Audio
-    <real trending sound name + BPM + mood, plus a fallback>
-
-    ### Posting Strategy
-    - **Day + time (IST):** <24h after Part 1; same time slot>
+    ### Production & Distribution
+    - **Audio:** <real trending sound name + BPM + mood> · Fallback: <fallback sound + BPM>
+    - **Post window (IST):** 24h after Part 1, same time slot.
     - **Cross-promo:** Pin Part 2 in Part 1's pinned comment within 5 min of publish. Story-share Part 1 with "Part 2 is live ↓".
-    - **Sequencing:** Part 2 of 2-reel pair. Reference Part 1 in caption opening line.
 
     ### Engagement Playbook (first 60 minutes)
-    - **Pinned comment (verbatim, ≤200 chars):** <framework summary + Part 1 link reference + DM trigger>
-    - **Prepared reply lines (3):**
-      1. Agreement amplifier — <line>
-      2. Gentle disagreement — <line>
-      3. Follow-up question — <line>
-    - **Outbound engagement (3 named accounts):** <accounts>
-    - **Story amplifier (30 min after feed post):** <slide concept + sticker; share Part 1 too>
-    - **Follow-up post idea (tomorrow's queue):** <next-day topic that continues the thread>
+    - **Pinned comment (≤200 chars, verbatim):** "<framework summary + Part 1 link reference + DM trigger>"
+    - **Prepared replies (3):** 1) Agreement amplifier — "<line>"  ·  2) Gentle disagreement — "<line>"  ·  3) Follow-up question — "<line>"
+    - **Outbound engagement (3 accounts):** <e.g. @nithin0dha, @sajithpai, @aviralbhat>
+    - **Story amplifier (T+30min):** <slide concept + sticker; share Part 1 too>
+    - **Tomorrow's queue:** <next-day topic that continues the thread>
 
     ---
     ```
 
     **HARD RULES:**
     - Output exactly ONE brief block, the Reel Part 2.
-    - Shot 1 sticker / voiceover EXPLICITLY callback Part 1's specific question (read Part 1 from context).
-    - ≥ 5 shot rows (target 6-7). Every shot a distinct beat.
-    - Every voiceover line MUST DIFFER from its sticker.
-    - All 3 caption drafts complete and open with "Yesterday I asked..." callback to Part 1.
-    - ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework.
-    - All 5 engagement-playbook components filled.
-    - All 3 hooks + all 4 CTAs filled.
+    - Shot 1 sticker AND voiceover EXPLICITLY callback Part 1's specific question (paraphrase from upstream Part 1 context — do NOT write a generic callback).
+    - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
+    - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
+    - Each of Shots 3, 4, 5 names a DIFFERENT specific real Indian company example with a number attached (₹ amount, multiple, %, headcount).
+    - Every "Scene" line names at least one specific real prop, location, or B-roll reference.
+    - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
+    - All 3 caption drafts complete; each opens with a Part 1 callback that paraphrases Part 1's actual question (not generic).
+    - ≥ 3 named Indian companies (already covered if Shots 3/4/5 are filled correctly), ≥ 2 specific numbers, ≥ 1 named framework.
+    - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
     - Zero example.com, zero placeholder names, zero motivational filler.
-    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence.
+    - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---", containing: thesis, audience, why-now, format=Reel — Part 2 (Payoff), specs, fact-check, sources, 3 hooks with reasoning, shot blueprint table with ≥5 rows where Shot 1 explicitly callbacks Part 1's question and every voiceover differs from its sticker, three caption drafts (each opening with a Part 1 callback), tiered hashtags, multi-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), Shot 1 explicitly paraphrasing Part 1's actual question (read from upstream context), Shots 3/4/5 each naming a different real Indian company example with a number, the final shot naming the DM trigger word, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion. Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, merged Production & Distribution block, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
