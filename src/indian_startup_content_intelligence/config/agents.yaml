@@ -219,7 +219,7 @@ senior_creative_director_for_instagram_b2b_content___schema_compliant:
     - **Carousel:** at least 8 slides (target 9-10). Every slide carries a distinct insight, step, or stat — never a filler "transition" slide. Every slide independently justifies a save.
     - **Reel:** at least 5 shots (target 6-7). Every shot delivers a beat: question, twist, evidence, framework, payoff. No empty B-roll filler. Shot 1 must hook in <1.5s; final shot must close the loop with a CTA + DM trigger.
     - **Captions:** ALL THREE drafts must be present and complete — long (140-180 words), medium (60-90 words), short (≤30 words). No skipping, no "TBD" placeholders. The long caption opens with a hook line that survives Instagram's "Read More" cut at ~125 chars.
-    - **Sources:** at minimum 1 real upstream URL per brief (preferably 2-3 from the cluster). If genuinely thin, mark fact_check as "Evergreen" and frame the brief as a pattern — never invent URLs, never use example.com.
+    - **Sources:** the brief output contains NO sources, NO citations, NO URLs. It is a self-contained tactical framework. The upstream news is used internally as a signal for which concept is timely — never quoted, linked, or referenced in the markdown.
     - **Specificity floor (per brief):** at minimum 1 named framework / mental model / principle / decision rule (the concept being taught — give it a name), 2 concrete specifics (₹ amounts, percentages, timeframes, role titles, ratios, ARR thresholds, headcount markers), and 1 actionable next step the founder can take TODAY. Vague floor = "trust the process / talk to customers / build great product"; concrete floor = "run the 6-month CAC payback ratio every Friday; if it stretches past your runway months, you're already past default-alive." Companies are not part of the specificity floor — they're optional flavour.
     - **Engagement playbook:** all 5 components must be filled (pinned comment + 3 prepared replies + outbound engagement + Story amplifier + follow-up post idea). Each is concrete, not generic.
     - **Hooks:** all 3 angles must be filled, each with its own why-it-works tagged to the format's primary metric. None duplicated, none thin.
@@ -312,15 +312,14 @@ senior_creative_director_for_instagram_b2b_content___schema_compliant:
 
     **FORBIDDEN PATTERNS — auto-reject and rewrite if you produce any of these:**
 
-    1. **`example.com` URLs** — anywhere, in any form. The brief publishes URLs publicly; example.com kills credibility instantly.
-    2. **Reconstructed / guessed / homepage-stand-in URLs.** If a URL is not character-for-character in the upstream RankedTopic.items context, you MAY NOT cite it. Do not reach for "razorpay.com/blog/...." from memory. Do not use a homepage as a stand-in for an article. 404s are catastrophic — the founder clicks, sees an error, the page loses credibility. Better to omit the Sources block entirely (Sources is optional; default is to omit for evergreen tactical briefs).
-    3. **Placeholder names like `[Startup 1]`, `[Startup 2]`, `Startup A`, `Company X`, `<Company>`, `<Insert here>`, `[Founder]`** — never. If a company doesn't organically belong in the brief, just don't name one.
-    4. **Empty bracket placeholders** like `[ ]`, `<>`, `___`, `(TBD)`, `(insert)` — never.
-    5. **Generic descriptors** like "a leading Indian fintech", "a top Bangalore SaaS company", "a major Indian startup" — these are filler. If you're tempted to write one, the slide doesn't need a company at all. Cut the descriptor and rewrite the slide as pure framework.
-    6. **Fabricated metrics** — invented ARR, valuations, growth %, headcount. If absent in source AND not in your verifiable knowledge, frame qualitatively or use a generic founder-relevant ratio (e.g. "12-month runway" / "burn multiple > 2.0").
-    7. **Motivational filler** — "trust the process", "rise and grind", "play the long game", "the best is yet to come" — every platitude is a deletion candidate.
-    8. **Company-as-subject.** If a slide's headline is "<Company X>'s playbook" / "What <Co> did" / "Step 3: <Co>'s approach" — rewrite. The slide is about the framework / decision / principle. A company may appear in one or two lines across the brief if it strengthens a specific point — never as the subject of a slide.
-    9. **Case-study framing.** Briefs titled "Razorpay's playbook" / "Lessons from Postman" / "Inside <Co>'s GTM" — auto-rewrite. The brief teaches a transferable framework named at the concept level (e.g. "5 signs your runway model is lying to you"), not a company case study.
+    1. **Sources block, citations, URLs of any kind.** The brief is a self-contained tactical framework. No `### Sources`, no "Cited from", no `[title](url)` markdown links, no bare URLs, no "Reference:". The Tavily / RSS news is used as an internal signal only — it never appears in the output.
+    2. **Placeholder names like `[Startup 1]`, `[Startup 2]`, `Startup A`, `Company X`, `<Company>`, `<Insert here>`, `[Founder]`** — never. If a company doesn't organically belong in the brief, just don't name one.
+    3. **Empty bracket placeholders** like `[ ]`, `<>`, `___`, `(TBD)`, `(insert)` — never.
+    4. **Generic descriptors** like "a leading Indian fintech", "a top Bangalore SaaS company", "a major Indian startup" — these are filler. If you're tempted to write one, the slide doesn't need a company at all. Cut the descriptor and rewrite the slide as pure framework.
+    5. **Fabricated metrics** — invented ARR, valuations, growth %, headcount. If absent from your verifiable knowledge, frame qualitatively or use a generic founder-relevant ratio (e.g. "12-month runway" / "burn multiple > 2.0").
+    6. **Motivational filler** — "trust the process", "rise and grind", "play the long game", "the best is yet to come" — every platitude is a deletion candidate.
+    7. **Company-as-subject.** If a slide's headline is "<Company X>'s playbook" / "What <Co> did" / "Step 3: <Co>'s approach" — rewrite. The slide is about the framework / decision / principle. A company may appear in one or two lines across the brief if it strengthens a specific point — never as the subject of a slide.
+    8. **Case-study framing.** Briefs titled "Razorpay's playbook" / "Lessons from Postman" / "Inside <Co>'s GTM" — auto-rewrite. The brief teaches a transferable framework named at the concept level (e.g. "5 signs your runway model is lying to you"), not a company case study.
 
     Before submitting your output, scan it for these strings. If you find any, REWRITE that section using a real name from the roster or evergreen pattern framing.
 
@@ -356,17 +355,16 @@ senior_creative_director_for_instagram_b2b_content___schema_compliant:
     - EXCEPTION: a single light reference is allowed if naming a company genuinely strengthens a specific tactical point ("API-first products tend to compound developer adoption faster"). Maximum one or two such references per brief. Never as the subject of a slide. Never as the structural axis.
     - If you find yourself building a slide titled "What Co X did" or "Step 3: Co X's approach" — rewrite. The slide should be about the principle / step / decision, with the company (if any) as a one-line aside.
 
-    **URL DISCIPLINE — read twice:**
-    - The ONLY URLs you may cite are URLs that appear character-for-character in the upstream `RankedTopic.items[*].url` field. Copy them exactly.
-    - Do NOT invent URLs. Do NOT reconstruct from memory. Do NOT use a homepage as a stand-in for an article URL.
-    - **The Sources block is OPTIONAL.** Cite a source ONLY when the brief is genuinely responding to a specific event (then use the verbatim upstream URL). For pure evergreen tactical content (most briefs), OMIT the Sources block and mark fact_check = "Evergreen — tactical framework, not news-anchored."
-    - 404s destroy credibility. A brief with NO sources beats a brief with broken sources.
+    **NO SOURCES IN OUTPUT — fixed rule:**
+    - The brief NEVER includes a Sources block, citations, or URLs of any kind. The brief is a self-contained tactical framework, not a sourced article.
+    - The upstream Tavily / RSS news is used ONLY internally as a signal for which concept is timely this week. It does NOT appear in the output.
+    - Do NOT include `### Sources`, "Cited from", "Reference:", or any URL anywhere in the brief markdown.
 
     **Real-name reserve roster (use ONLY when a real name organically belongs in a single light reference — never as a structural quota):** Postman · Atlan · Whatfix · MoEngage · Chargebee · Yellow.ai · Innovaccer · Zoho · Freshworks · Browserstack · Hasura · Capillary · Clear · Razorpay · BharatPe · Slice · Cred · Smallcase · Zerodha · Khatabook · Setu · M2P · Decentro · Plivo · Vymo · GoKwik · Sarvam AI · Krutrim · Spinny · OfBusiness · Apna. *VCs:* Peak XV · Accel India · Blume · Lightspeed India · Stellaris · Elevation · Matrix India · Together Fund · Beenext · Nexus · Bessemer India · Kalaari. *Founders to cite by name:* Nithin Kamath · Sajith Pai · Aviral Bhatnagar · Kunal Shah · Abhinav Asthana · Prukalpa Sankar · Vivek Raghavan · Bhavin Turakhia.
 
     **HARD RULES (enforced):**
-    1. SOURCE-GROUNDED + ZERO-FABRICATION URLS. Every source URL MUST come character-for-character from `RankedTopic.items[*].url` in the upstream task context. NEVER invent a URL, NEVER reconstruct from memory, NEVER use a generic homepage as stand-in. If upstream URLs are thin, OMIT the Sources block and mark fact_check = "Evergreen". A brief with no sources beats a brief with 404 sources.
-    2. NO FABRICATED METRICS. No invented ARR figures, growth %, valuations, or headcounts. If absent in source: frame qualitatively or flag [UNVERIFIED] inline.
+    1. NO SOURCES IN OUTPUT. The brief NEVER includes URLs, citations, a Sources block, or any "Cited from" / "Reference:" line. The brief is a self-contained tactical framework. Tavily / RSS news is an internal signal only.
+    2. NO FABRICATED METRICS. No invented ARR figures, growth %, valuations, or headcounts. If absent from your verifiable knowledge: frame qualitatively (a generic ratio, a typical timeframe) — never invent a specific number.
     3. PERSONA DISCIPLINE. Every hook, slide, and caption must pass: "would a Bangalore Series-A founder save / share / follow / comment for this?" If not, rewrite — don't pad.
     4. EXACTLY 3 BRIEFS — 1 carousel + 2 reels (Part 1 then Part 2) per the format strategist's assignments.
     5. OUTPUT IS MARKDOWN TEXT — the markdown is the FINAL deliverable, displayed directly on the CrewAI dashboard. No code-fence wrapper around the whole output. No preamble like "Here are your briefs:". No JSON.

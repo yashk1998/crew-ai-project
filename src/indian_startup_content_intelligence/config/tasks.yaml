@@ -140,10 +140,7 @@ generate_carousel_brief:
     - EXCEPTION: 1–2 light company references allowed across the entire brief if naming a company genuinely strengthens a tactical point. Never as the subject of a slide. Never structural. If a slide reads "Step 3: Co X's approach" — rewrite as "Step 3: <the principle>."
     - There is NO minimum-companies rule. A brief with zero companies is GOOD if the framework lands.
 
-    **URL DISCIPLINE — read twice:**
-    - Cite ONLY URLs that appear character-for-character in the upstream `RankedTopic.items[*].url` field. Copy verbatim.
-    - NEVER invent URLs, NEVER reconstruct from memory, NEVER use a company homepage as an article stand-in.
-    - **Sources block is OPTIONAL.** Default to OMIT for evergreen tactical content (most briefs). Only include Sources if the brief is genuinely responding to a specific event AND you have the verbatim upstream URL. Mark fact_check = "Evergreen — tactical framework, not news-anchored" when omitting.
+    **NO SOURCES IN OUTPUT:** The brief NEVER includes a Sources block, URLs, citations, or a Fact-check line. It is a self-contained tactical framework. The upstream news is an internal signal only — used to pick which concept to teach, never quoted or linked.
 
     **Output the brief using EXACTLY this markdown template (output ONLY this single brief block — no preamble, no postamble):**
 
@@ -155,14 +152,9 @@ generate_carousel_brief:
     > **Founder's takeaway (Monday-morning action):** <the one concrete thing the founder should DO after consuming this brief — a ratio to run, a question to ask, a decision to make, a doc to write>
 
     **Audience:** <specific founder subsegment, e.g. "Pre-seed B2B SaaS founders negotiating their first cap table">
-    **Why this concept is timely this week:** <what news / pattern in the ecosystem signals this concept is on founders' minds — but the brief is NOT a news report, it's the framework>
+    **Why this concept is timely this week:** <what pattern in the ecosystem signals this concept is on founders' minds — internal context only, no link>
     **Format:** Carousel
     **Specs:** 8-10 slides | 4:5 | Slide 1 hook | 5-7 hashtags
-    **Fact-check:** <Verified | Evergreen — tactical framework, not news-anchored | Unverified> — <one-sentence note>
-
-    ### Sources
-    - [<title>](<real upstream url>) — <source name>
-    - [<title>](<real upstream url>) — <source name>
 
     ### Hooks
     **A · Specific number / loss-aversion** — <hook text, ≤15 words>
@@ -184,11 +176,10 @@ generate_carousel_brief:
     ---
 
     #### Slide 1 · Hook (earn the swipe)
-    - **Visual concept:** <2–3 sentences of literal visual content — what's on screen, layout, named real Indian specifics. e.g. "Razorpay logo top-left, ₹800 Cr Series D grabber headline centered, soft Razorpay-blue gradient backdrop, swipe-right arrow bottom-right.">
-    - **Design:** <hex palette (e.g. "Razorpay blue #095DCE on bone #F5F1E8 with accent #FF5A1F") · typography (Inter Display 800, 72pt / 1.1 line-height) · layout (centered, generous negative space)>
+    - **Visual concept:** <2–3 sentences of literal visual content — what's on screen, layout, mood. e.g. "Bold typography hero: framework name centered on bone backdrop, swipe-right arrow bottom-right, soft gradient at the top edge.">
+    - **Design:** <hex palette (e.g. "Ink #0A0A0A on bone #F5F1E8 with accent #FF5A1F") · typography (Inter Display 800, 72pt / 1.1 line-height) · layout (centered, generous negative space)>
     - **Headline (≤8 words):** "<text>"
-    - **Sub / body text (optional, ≤20 words):** "<supporting line — number + name>"
-    - **Source credit:** <e.g. "Data: Inc42 funding tracker, 2024">
+    - **Sub / body text (optional, ≤20 words):** "<supporting line — a number, a stake, or a question>"
 
     ---
 
@@ -197,7 +188,6 @@ generate_carousel_brief:
     - **Design:** <...>
     - **Headline (≤8 words):** "<...>"
     - **Sub / body text:** "<...>"
-    - **Source credit:** <...>
 
     ---
 
@@ -251,7 +241,6 @@ generate_carousel_brief:
     - **Design:** <...>
     - **Headline (≤8 words):** "<the framework name + word "playbook" / "blueprint">"
     - **Sub / body text:** "<3-line summary of the steps>"
-    - **Source credit:** <optional>
 
     ---
 
@@ -259,8 +248,7 @@ generate_carousel_brief:
     - **Visual concept:** <large founder face crop OR brand mark; CTA copy dominates the frame>
     - **Design:** <high-contrast accent for the CTA word; arrow / hand pointer toward profile pic top-left>
     - **Headline (≤8 words):** "Save · Follow · DM '<TRIGGER>'"
-    - **Sub / body text:** "<one-line invite, e.g. 'Daily Indian SaaS playbooks. Follow @<handle>.'>"
-    - **Source credit:** <not applicable>
+    - **Sub / body text:** "<one-line invite, e.g. 'Daily founder playbooks. Follow @<handle>.'>"
 
     ---
 
@@ -360,17 +348,17 @@ generate_carousel_brief:
     - **UNCANNY-INSIGHT TEST.** Every slide teaches a non-obvious lesson — second-order, third-order, or contrarian. If a founder could infer the line from a 30-second skim of any obvious source, rewrite. Slides 3–7 are the framework's 5 elements (steps / principles / signs / questions / moves) — each a distinct, actionable, non-obvious insight.
     - **Slide Blueprint uses per-slide BLOCKS, not a markdown table.** ≥ 9 slide blocks (Slide 1 Hook through Slide 9 CTA), each with all labelled fields filled. NEVER output the slide blueprint as a `| pipe | table |`.
     - Every "Visual concept" is 2–3 sentences of literal content. Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 layout note.
-    - **URL DISCIPLINE:** Cite ONLY URLs verbatim from upstream RankedTopic.items. NEVER invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content; mark fact_check = "Evergreen — tactical framework, not news-anchored." 404s destroy credibility.
+    - **NO SOURCES IN OUTPUT.** The brief NEVER includes a Sources block, URLs, citations, or Fact-check line. Self-contained tactical framework only.
     - All 3 caption drafts complete (long 140-180w, medium 60-90w, short ≤30w).
     - **Specificity floor:** ≥ 1 named framework / mental model / decision rule (give it a name), ≥ 2 concrete specifics (numbers, ratios, ₹ amounts, %, timeframes, role titles, ARR thresholds, headcount markers), ≥ 1 actionable Monday-morning next step. Vague filler ("focus on customers") = automatic rewrite into a concrete diagnostic or ratio.
     - All 5 engagement-playbook components filled with specifics.
     - All 3 hooks + all 4 CTAs filled.
     - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks filled with concrete specifics — no "TBD".
-    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs.
+    - Zero example.com, zero placeholder names, zero motivational filler, zero URLs of any kind.
     - Every line passes the like-save-share test, or it gets cut.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical framework name; subject is the founder's reasoning, not any company). Contains: header strip with Concept being taught + Thesis + Founder's Monday-morning takeaway + Audience + Why this concept is timely this week, Sources block OPTIONAL (default omitted; only included with verbatim upstream URLs), 3 hooks with reasoning, a Slide Blueprint built as ≥9 per-slide blocks (NOT a markdown table) where Slides 3–7 are the 5 elements of the framework (steps/principles/signs); every slide teaches a non-obvious lesson; companies absent by default — max 1–2 light references across the entire brief and never as a slide subject. Complete Production Handoff section (4 next actions with owner+deadline, pre-prod, build kit, build day flow, post-build checklist, deliverables, approval gate). Three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers / ratios / timeframes, ≥ 1 Monday-morning action. Zero example.com, zero placeholders, zero invented URLs, zero company-as-subject framing.
+    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical framework name; subject is the founder's reasoning, not any company). NO Sources block, NO URLs, NO citations, NO Fact-check line — the brief is a self-contained tactical framework. Contains: header strip with Concept being taught + Thesis + Founder's Monday-morning takeaway + Audience + Why this concept is timely this week (internal context only); 3 hooks with reasoning; a Slide Blueprint built as ≥9 per-slide blocks (NOT a markdown table) where Slides 3–7 are the 5 elements of the framework (steps/principles/signs); every slide teaches a non-obvious lesson; companies absent by default — max 1–2 light references across the entire brief and never as a slide subject. Complete Production Handoff section (4 next actions with owner+deadline, pre-prod, build kit, build day flow, post-build checklist, deliverables, approval gate). Three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers / ratios / timeframes, ≥ 1 Monday-morning action. Zero example.com, zero placeholders, zero URLs of any kind, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -384,7 +372,7 @@ generate_reel_part1_brief:
 
     **Companies — strict rules:** DEFAULT zero company names. Up to 1–2 light references across the brief if naming a company genuinely strengthens a tactical point. Never as the subject of a shot. NO minimum-companies rule.
 
-    **URL DISCIPLINE:** Cite ONLY URLs verbatim from upstream RankedTopic.items context. NEVER invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content; mark fact_check = "Evergreen — tactical framework."
+    **NO SOURCES IN OUTPUT:** The brief NEVER includes a Sources block, URLs, citations, or a Fact-check line. It is a self-contained tactical framework. The upstream news is an internal signal only — used to pick which concept to teach, never quoted or linked.
 
     **Part 1 narrative role:** SETUP. Surface the tension, name the dilemma, plant the question the founder can't unsee. End the final shot with an explicit teaser for Part 2 ("Tomorrow: the 4 questions that decide it.").
 
@@ -401,12 +389,8 @@ generate_reel_part1_brief:
     > **Thesis:** <one sharp sentence stating the non-obvious dilemma this reel surfaces; written as the founder's question, not a company observation>
     > **Founder's reflection question:** <the question the founder should sit with after watching, e.g. "Is your sales hire under-performing because of them, or because of where you are on the ARR curve?">
 
-    **Audience:** <specific founder subsegment> · **Why this concept is timely this week:** <what signal in the ecosystem made you pick this concept now>
+    **Audience:** <specific founder subsegment> · **Why this concept is timely this week:** <what signal in the ecosystem made you pick this concept now — internal context only, no link>
     **Format:** Reel — Part 1 (Setup) · **Specs:** 6 shots × 30–45s · 9:16 · Hook in first 1.5s · Final shot = Part 2 teaser
-    **Fact-check:** <Verified | Evergreen — tactical framework | Unverified> — <one-line note>
-
-    ### Sources
-    - [<title>](<real upstream url>) — <source name>
 
     ### Hooks (3 angles)
     - **A · Specific number / loss-aversion** — "<hook text, ≤15 words>" _(why it works: <1 sentence on watch_time>)_
@@ -575,7 +559,7 @@ generate_reel_part1_brief:
     - **CONCEPT-LED, FOUNDER-FOCUSED.** Brief title is a tactical dilemma, not a company. The subject is the founder's reasoning.
     - **COMPANIES ARE OPTIONAL FLAVOUR.** Default zero company names. Max 1–2 light references across the brief; never as the subject of a shot. NO minimum-companies rule.
     - **UNCANNY-INSIGHT TEST.** Every shot teaches a non-obvious observation about the dilemma — second-order, third-order, or contrarian. Headline-recap = automatic rewrite.
-    - **URL DISCIPLINE.** Cite ONLY URLs verbatim from upstream context. Never invent, reconstruct, or use a homepage stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content.
+    - **NO SOURCES IN OUTPUT.** The brief NEVER includes a Sources block, URLs, citations, or Fact-check line. Self-contained tactical framework only.
     - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
     - Final shot's sticker AND voiceover both EXPLICITLY reference Part 2.
     - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
@@ -585,10 +569,10 @@ generate_reel_part1_brief:
     - All 3 caption drafts complete and end teasing Part 2.
     - **Specificity floor:** ≥ 1 named framework / mental model / decision rule, ≥ 2 concrete specifics (numbers, ratios, ₹ amounts, %, timeframes, role titles), ≥ 1 actionable founder reflection or move.
     - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
-    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs, zero company-as-subject framing.
+    - Zero example.com, zero placeholder names, zero motivational filler, zero URLs of any kind, zero company-as-subject framing.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical dilemma, not a company; subject is the founder's reasoning). Contains: compact header strip with Concept being taught + Thesis + Founder's reflection question, Sources block OPTIONAL (default omitted), 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); final shot explicitly teases Part 2; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 actionable founder reflection. Zero example.com, zero placeholders, zero invented URLs, zero company-as-subject framing.
+    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical dilemma, not a company; subject is the founder's reasoning). NO Sources block, NO URLs, NO citations, NO Fact-check line — self-contained tactical framework. Contains: compact header strip with Concept being taught + Thesis + Founder's reflection question; 3 hooks with reasoning; a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); final shot explicitly teases Part 2; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 actionable founder reflection. Zero example.com, zero placeholders, zero URLs of any kind, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -602,7 +586,7 @@ generate_reel_part2_brief:
 
     **Companies — strict rules:** DEFAULT zero company names. Up to 1–2 light references across the brief if a company genuinely strengthens a tactical point. Never as the subject of a shot. NO minimum-companies rule. Shots 3/4/5 deliver the 3 elements of the framework — those elements are PRINCIPLES / RATIOS / DECISION CRITERIA, not company examples.
 
-    **URL DISCIPLINE:** Cite ONLY URLs verbatim from upstream context. NEVER invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT** for evergreen tactical content.
+    **NO SOURCES IN OUTPUT:** The brief NEVER includes a Sources block, URLs, citations, or a Fact-check line. It is a self-contained tactical framework. The upstream news is an internal signal only.
 
     **Part 2 narrative role:** PAYOFF. Open by acknowledging Part 1 ("Yesterday I asked..."). Deliver the 3-element framework that resolves Part 1's tension. Reference Part 1 in caption + pinned comment.
 
@@ -621,12 +605,8 @@ generate_reel_part2_brief:
     > **Thesis:** <one sharp sentence framing the 3-element framework / decision rule this reel delivers as the founder's takeaway>
     > **Founder's takeaway (Monday-morning action):** <the concrete thing the founder does after watching — the ratio to run, the question to ask, the doc to write>
 
-    **Audience:** <specific founder subsegment> · **Why this concept is timely this week:** <timeliness signal; reference Part 1 cadence>
+    **Audience:** <specific founder subsegment> · **Why this concept is timely this week:** <timeliness signal; reference Part 1 cadence — internal context only, no link>
     **Format:** Reel — Part 2 (Payoff) · **Specs:** 6 shots × 30–45s · 9:16 · Shot 1 = explicit Part 1 callback · Final shot = framework summary + DM trigger
-    **Fact-check:** <Verified | Evergreen — tactical framework | Unverified> — <one-line note>
-
-    ### Sources
-    - [<title>](<real upstream url>) — <source name>
 
     ### Hooks (3 angles)
     - **A · Specific number / loss-aversion** — "<hook text, ≤15 words; references Part 1's question>" _(why it works: <1 sentence on watch_time>)_
@@ -798,7 +778,7 @@ generate_reel_part2_brief:
     - **CONCEPT-LED, FOUNDER-FOCUSED.** Brief title is a tactical framework name, not a company. Subject is the founder's reasoning.
     - **COMPANIES ARE OPTIONAL FLAVOUR.** Default zero company names. Max 1–2 light references across the brief; never as the subject of a shot. Shots 3/4/5 deliver framework ELEMENTS (ratios / questions / decision rules), NOT company examples.
     - **UNCANNY-INSIGHT TEST.** Every shot teaches a non-obvious lesson. Shots 3/4/5 each deliver a non-obvious framework element — second-order, third-order, or contrarian.
-    - **URL DISCIPLINE.** Cite ONLY URLs verbatim from upstream context. Never invent, reconstruct, or use a homepage as stand-in. **Sources block is OPTIONAL — default to OMIT.**
+    - **NO SOURCES IN OUTPUT.** The brief NEVER includes a Sources block, URLs, citations, or Fact-check line. Self-contained tactical framework only.
     - Shot 1 sticker AND voiceover EXPLICITLY callback Part 1's specific question (paraphrase from upstream Part 1 context — do NOT write a generic callback).
     - ≥ 6 shot blocks. Every shot has all 8 labelled fields filled with specifics — no "TBD", no one-line stand-ins.
     - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
@@ -808,10 +788,10 @@ generate_reel_part2_brief:
     - All 3 caption drafts complete; each opens with a Part 1 callback that paraphrases Part 1's actual question (not generic).
     - **Specificity floor:** ≥ 1 named framework / decision rule / mental model, ≥ 2 concrete specifics (numbers, ratios, ₹ amounts, %, timeframes, role titles), ≥ 1 actionable Monday-morning move.
     - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
-    - Zero example.com, zero placeholder names, zero motivational filler, zero invented URLs, zero company-as-subject framing.
+    - Zero example.com, zero placeholder names, zero motivational filler, zero URLs of any kind, zero company-as-subject framing.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical framework, not a company). Contains: compact header strip with Concept being taught + Thesis + Founder's Monday-morning takeaway, Sources block OPTIONAL (default omitted), 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); Shot 1 explicitly paraphrases Part 1's actual question; Shots 3/4/5 each deliver one element of the framework (ratio / question / decision rule / diagnostic — NOT a company example); the final shot names the DM trigger word; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section (with Part 1 continuity, grade-match QA, DM-trigger-live check). Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 Monday-morning action. Zero example.com, zero placeholders, zero invented URLs, zero company-as-subject framing.
+    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". The brief is CONCEPT-LED and FOUNDER-FOCUSED (title is a tactical framework, not a company). NO Sources block, NO URLs, NO citations, NO Fact-check line — self-contained tactical framework. Contains: compact header strip with Concept being taught + Thesis + Founder's Monday-morning takeaway; 3 hooks with reasoning; a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition); Shot 1 explicitly paraphrases Part 1's actual question; Shots 3/4/5 each deliver one element of the framework (ratio / question / decision rule / diagnostic — NOT a company example); the final shot names the DM trigger word; every voiceover differs from its sticker; every scene names a real prop/location/B-roll (no company name required); every design line gives hex+type+motion; companies absent by default with max 1–2 light references and never as a shot subject. Complete Production Handoff section (with Part 1 continuity, grade-match QA, DM-trigger-live check). Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 1 named framework, ≥ 2 specific numbers/ratios/timeframes, ≥ 1 Monday-morning action. Zero example.com, zero placeholders, zero URLs of any kind, zero company-as-subject framing.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
