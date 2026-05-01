@@ -170,6 +170,51 @@ generate_carousel_brief:
 
     Slide 1 = hook. Slide 2 = stakes / why this matters. Slides 3-8 = framework, one step per slide, each with a real named Indian company example. Final slide = summary + Follow CTA. Voiceover column empty.
 
+    ### Production Handoff
+
+    **Producer's next 4 actions (do today, in order — name an owner + deadline for each):**
+    1. <action + owner + deadline, e.g. "Designer: lock Figma template + brand kit by 5 PM IST today">
+    2. <action + owner + deadline>
+    3. <action + owner + deadline>
+    4. <action + owner + deadline>
+
+    **Pre-production checklist (T-24h before publish):**
+    - **Figma file:** <project + frame template, e.g. "IG-Carousel-4x5-9slides — Frames 1–9">
+    - **Brand kit:** <hex palette (3 colours) + typography weights, e.g. "Ink #0A0A0A / Bone #F5F1E8 / Accent #FF5A1F · Inter Display 800 (headlines) + Inter SemiBold (body)">
+    - **Source assets (numbered, with where to source each):** 1) <e.g. "Founder portrait — internal Drive / brand-photos">  2) <e.g. "Razorpay dashboard screenshot — official press kit">  3) <e.g. "Stat card data — pull from Inc42 funding tracker">
+    - **Stat sheet:** Build ONE doc with every number, company name, founder name, and source URL the slides will reference. Designer pulls from this; nothing gets typed twice.
+
+    **Build kit:**
+    - **Tool:** Figma (Canva Pro as fallback)
+    - **Frame size:** 1080×1350 (4:5) · 12-column grid · 24px gutter · 64px outer margin
+    - **Type system:** Headline 72pt / 1.1 line-height · Body 36pt / 1.4 · Caption 24pt / 1.3 (adjust to your kit)
+    - **Plugins:** Iconify for icons · Unsplash plugin for stock if needed
+
+    **Build day flow (3 hours total):**
+    - 0–30 min: Wireframe all 9 slides on a single Figma page (greybox layout, no design polish)
+    - 30–120 min: Visual design pass — apply colours, typography, imagery, lower-thirds
+    - 120–150 min: Founder review on Figma share link, capture feedback inline
+    - 150–180 min: Revisions + export
+
+    **Post-build checklist (do in this order):**
+    1. Export PNG sequence at 1080×1350, sRGB, named `slide-01.png` through `slide-09.png`
+    2. Build a 5s MP4 walkthrough mock (15fps, 1080×1350) so the founder previews the full carousel as one piece
+    3. Cover image: crop slide 1 to 1080×1080 for the feed grid preview
+    4. Alt-text file: 1 plain-English sentence per slide for accessibility (saved as `alt.txt`)
+    5. Quality gate: every slide opened on a 6.1" phone preview before sign-off — confirm headline readable in 1.5s, no body text smaller than 28pt
+
+    **Deliverables (drop all in `/<topic-slug>/carousel/` shared folder):**
+    - 8–10 PNG slides (1080×1350)
+    - 1 MP4 walkthrough mock (5s)
+    - 1 cover image (1080×1080)
+    - 1 alt-text file
+    - Figma source link (read-only)
+
+    **Approval gate:**
+    - Founder reviews wireframe at T-24h (10-min call max)
+    - Founder signs off final exports T-2h before scheduled post
+    - If founder unreachable T-2h: designer publishes the locked v2 (no further edits)
+
     ### Captions (3 drafts)
 
     **Long (140-180 words):**
@@ -221,11 +266,12 @@ generate_carousel_brief:
     - ≥ 3 named Indian companies, ≥ 2 specific ₹ amounts or percentages, ≥ 1 named framework / playbook / role per brief.
     - All 5 engagement-playbook components filled with specifics.
     - All 3 hooks + all 4 CTAs filled.
+    - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks (next-actions, pre-prod, build kit, build day flow, post-build checklist, deliverables, approval gate) filled with concrete specifics — no "TBD", no generic "design well".
     - Zero example.com, zero placeholder names, zero motivational filler.
     - Every line passes the like-save-share test, or it gets cut.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no code fence wrapping the whole output.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---", containing: thesis, audience, why-now, format=Carousel, specs, fact-check, sources (real upstream URLs or omitted), 3 hooks with reasoning, slide blueprint table with ≥8 rows, three caption drafts (long/medium/short), tiered hashtags, multi-CTA stack (primary/comment/DM/follow), audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #1:") for the carousel topic, ending with "---". Contains: header strip, sources, 3 hooks with reasoning, slide blueprint table with ≥8 rows, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-production checklist, build kit, build day flow, post-build checklist, deliverables, approval gate — every sub-block concrete), three caption drafts (long/medium/short), tiered hashtags, 4-CTA stack, audio, posting strategy, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -341,6 +387,53 @@ generate_reel_part1_brief:
     - **Emotion:** Anticipation
     - **Transition out:** End-card hold for 1.0s.
 
+    ### Production Handoff
+
+    **Producer's next 4 actions (do today, in order — name an owner + deadline for each):**
+    1. <action + owner + deadline, e.g. "Producer: confirm wardrobe + lock coworking corner location by 6 PM IST today">
+    2. <action + owner + deadline, e.g. "Producer: pull B-roll fetch list from Pexels + Razorpay press kit by 9 PM today">
+    3. <action + owner + deadline, e.g. "Founder: rehearse Shot 1 + Shot 6 voiceovers tonight (out loud, recorded as voice memo)">
+    4. <action + owner + deadline, e.g. "Editor: prep Premiere project with template + LUT before shoot">
+
+    **Pre-production checklist (T-24h before publish):**
+    - **Wardrobe:** <specific outfit + 1 backup, e.g. "Plain charcoal crew-neck tee, dark jeans · backup: navy henley">
+    - **Location + lighting window:** <specific spot + best time, e.g. "BHIVE Indiranagar window seat · 8:30–10:00 AM IST for soft east-side light">
+    - **Props (numbered):** 1) <prop + source>  2) <prop + source>  3) <prop + source>
+    - **B-roll fetch list (numbered, name source for each):** 1) <e.g. "Slack notification overlay — record on personal device">  2) <e.g. "Cap-table screenshot — Carta India template">  3) <e.g. "Coworking ambient B-roll — shoot day, last 15 min">
+    - **Data assets:** <e.g. "Build mock cap-table in Notion or Carta India template; populate with realistic seed-round numbers BEFORE shoot day">
+
+    **Shoot kit:**
+    - **Camera:** iPhone 15 Pro back camera · 24mm or 35mm equivalent · 4K @ 30fps · ProRes off (file size)
+    - **Audio:** Rode Wireless GO II lavalier · monitored on iPhone via Filmic Pro · -12dB headroom
+    - **Lighting:** Window light camera-right + 5-in-1 reflector (white side) · OR Aputure Amaran 60d at 30%, 5600K with shoot-through softbox
+    - **Mount:** Manfrotto PIXI tripod at chest height · gimbal NOT required for this shot list
+
+    **Shoot day flow (90 min total — call sheet):**
+    - **0–10 min:** Frame check, sound check, 2 dry runs of full reel start-to-end
+    - **10–55 min:** 6 hero shots, 3–4 takes each (45 min)
+    - **55–80 min:** B-roll fetch list captured
+    - **80–90 min:** Pickups + safety takes (Shot 1 hook + Shot 6 teaser are highest priority — do 2 extra takes of each)
+
+    **Post-production checklist (deliver T-12h before publish, in this order):**
+    1. Cut to 30–45s runtime · lock pacing 4–7s per shot · check Shot 1 hook lands inside first 1.5s
+    2. Color: <warm cinematic LUT · +3 saturation · lift shadows 5% · skin-tone protection on>
+    3. Captions burn-in: <Inter Display 800 · ink #0A0A0A on accent fill · lower-third position>; on-screen text matches each shot's sticker exactly (≤6 words)
+    4. End card: 1.0s hold · "Part 2 tomorrow" highlighted in accent colour · DM trigger visible
+    5. Audio mix: voiceover -16 LUFS · music ducked -12dB under VO · no clipping above -3dB
+    6. Export: 1080×1920 · MP4 H.264 · AAC audio · ≤4 Mbps · sRGB
+
+    **Deliverables (drop all in `/<topic-slug>/reel-part1/` shared folder):**
+    - Final reel: 9:16 · 30–45s · MP4 H.264 · 1080×1920
+    - Cover frame: hero crop from Shot 1 (1080×1920 PNG)
+    - Caption file (.srt) for accessibility
+    - Source project file (Premiere/CapCut) backed up to Drive
+
+    **Approval gate:**
+    - Founder reviews rough cut at T-12h (Frame.io or Drive comment)
+    - Final sign-off T-2h before scheduled post
+    - If audio gets demonetised between sign-off and publish, fall back to <fallback sound from Distribution block>
+    - If founder unreachable T-2h: editor publishes locked v2 (no further edits)
+
     ### Captions (3 drafts)
     **Long (140–180w):** <story-led; first line survives "Read More" cut at ~125 chars; ends teasing Part 2>
     **Medium (60–90w):** <punchier; ends teasing Part 2>
@@ -355,7 +448,7 @@ generate_reel_part1_brief:
     - **DM-trigger:** <e.g. "DM 'PART2' for the early notification">
     - **Follow:** Follow so Part 2 hits your feed tomorrow.
 
-    ### Production & Distribution
+    ### Distribution
     - **Audio:** <real trending sound name + BPM + mood> · Fallback: <fallback sound + BPM>
     - **Post window (IST):** <e.g. Mon 8:30 AM IST — pre-stand-up scroll>
     - **Cross-promo:** Story tease 2–4h before with poll sticker. Pin Part 2 in Part 1's comments the moment Part 2 publishes.
@@ -377,13 +470,14 @@ generate_reel_part1_brief:
     - Every voiceover differs from its sticker. Sticker ≤6 words. Voiceover 1–3 conversational sentences.
     - Every "Scene" line names at least one specific real prop, location, or B-roll reference (Indian or globally credible — Notion templates, Razorpay dashboards, BHIVE/91Springboard coworking, real cap-table docs, etc.).
     - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
+    - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks (next-actions, pre-prod, shoot kit, shoot day flow, post-prod checklist, deliverables, approval gate) filled with concrete specifics — name actual gear, actual time-boxes, actual file specs.
     - All 3 caption drafts complete and end teasing Part 2.
     - ≥ 3 named Indian companies, ≥ 2 specific numbers (₹ amounts, %, multiples, headcount), ≥ 1 named framework across the brief.
     - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
     - Zero example.com, zero placeholder names, zero motivational filler.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), the final shot explicitly teasing Part 2, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion. Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, merged Production & Distribution block, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #2:") for the Reel Part 1 (Setup) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), the final shot explicitly teasing Part 2, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-prod checklist, shoot kit, shoot day flow, post-prod checklist, deliverables, approval gate — every sub-block concrete with named gear/time-boxes/file specs). Three caption drafts (each ending with a Part 2 tease), tiered hashtags, 4-CTA stack, Distribution block (audio + post window + cross-promo), and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
@@ -501,6 +595,56 @@ generate_reel_part2_brief:
     - **Emotion:** Confidence / Resolution
     - **Transition out:** End-card hold for 1.0s.
 
+    ### Production Handoff
+
+    **Producer's next 4 actions (do today, in order — name an owner + deadline for each):**
+    1. <action + owner + deadline, e.g. "Producer: re-confirm same wardrobe + same location as Part 1 for visual continuity by 6 PM IST today">
+    2. <action + owner + deadline, e.g. "Designer: build the 1-pager DM-trigger PDF (the asset DM-ers will receive) by 9 PM today">
+    3. <action + owner + deadline, e.g. "Founder: rehearse Shot 1 callback line + Shot 6 framework recap as voice memos">
+    4. <action + owner + deadline, e.g. "Editor: pull Part 1 final frame for Shot 1 inset overlay">
+
+    **Pre-production checklist (T-24h before publish):**
+    - **Wardrobe + location:** SAME as Part 1 (visual continuity is non-negotiable for the 2-reel arc) · backup: <one alternate>
+    - **Lighting window:** Same time of day as Part 1's shoot for matching colour temperature
+    - **Props (numbered):** 1) <prop + source>  2) <prop + source>  3) <prop + source — note: if Part 1 used a specific physical prop, re-use it>
+    - **B-roll fetch list (numbered, name source for each):** 1) <Indian co stat card #1 — source>  2) <Indian co stat card #2 — source>  3) <Indian co stat card #3 — source>  4) Part 1 final-frame still — pull from Part 1 export
+    - **Data assets:** <e.g. "Stat sheet with the 3 framework beats + each company's specific number + source URL — designer pulls lower-thirds from this">
+    - **DM-trigger asset:** The 1-pager / template / PDF that DM-ers will receive — must be ready BEFORE the reel publishes (highest-friction failure point)
+
+    **Shoot kit:**
+    - **Camera:** Same as Part 1 — iPhone 15 Pro back camera · 24mm or 35mm equivalent · 4K @ 30fps · same lens choice for visual match
+    - **Audio:** Same lavalier setup as Part 1
+    - **Lighting:** Same window/key direction as Part 1 to match colour temperature
+    - **Mount:** Same height as Part 1 (chest height); for Shots 3/4/5 stat-card reveals, second tripod for B-roll insert if shooting screen-record live
+
+    **Shoot day flow (90 min total — call sheet):**
+    - **0–10 min:** Reference Part 1 export on a second monitor; match white balance, framing, audio gain
+    - **10–55 min:** 6 hero shots, 3–4 takes each — Shot 1 (Part 1 callback) and Shot 6 (framework recap + DM trigger) get 2 extra takes
+    - **55–80 min:** B-roll fetch — capture stat-card screen-records for Shots 3/4/5 cut-ins
+    - **80–90 min:** Pickups + safety takes
+
+    **Post-production checklist (deliver T-12h before publish, in this order):**
+    1. Cut to 30–45s · lock pacing 4–7s with the slowest cut on Shot 5 (framework reveal)
+    2. Insert Part 1 final-frame overlay in Shot 1 for 1.5s (top-right, 4px ink border) so returning viewers feel the handoff
+    3. Color: match Part 1's grade exactly (same LUT, same saturation, same shadow lift)
+    4. Captions burn-in: same type system as Part 1 · highlight DM trigger word in accent colour
+    5. End card: 1.0s hold · DM trigger word visible · framework 3-beat recap stacked
+    6. Audio mix: voiceover -16 LUFS · music ducked -12dB under VO
+    7. Export: 1080×1920 · MP4 H.264 · AAC · ≤4 Mbps · sRGB
+    8. QA pass: open both Part 1 and Part 2 side-by-side on phone — colour, type, framing should feel like a pair
+
+    **Deliverables (drop all in `/<topic-slug>/reel-part2/` shared folder):**
+    - Final reel: 9:16 · 30–45s · MP4 H.264 · 1080×1920
+    - Cover frame: hero crop from Shot 5 or Shot 6 (highest save-rate moment)
+    - Caption file (.srt) for accessibility
+    - Source project file backed up
+    - DM-trigger asset (the 1-pager PDF) staged in DM auto-responder before publish
+
+    **Approval gate:**
+    - Founder reviews rough cut at T-12h alongside Part 1 (must feel like a pair, not standalone)
+    - Final sign-off T-2h
+    - **DM-trigger asset must be confirmed live in auto-responder T-30min before publish** — without it the DM CTA breaks
+
     ### Captions (3 drafts)
     **Long (140–180w):** <opens with "Yesterday I asked..." callback that paraphrases Part 1's actual question, then delivers framework / numbers / contrarian take; first line survives "Read More" cut>
     **Medium (60–90w):** <punchier; opens with Part 1 callback>
@@ -515,7 +659,7 @@ generate_reel_part2_brief:
     - **DM-trigger:** <e.g. "DM 'PLAY' for the full framework as a 1-pager">
     - **Follow:** Follow for tomorrow's daily breakdown.
 
-    ### Production & Distribution
+    ### Distribution
     - **Audio:** <real trending sound name + BPM + mood> · Fallback: <fallback sound + BPM>
     - **Post window (IST):** 24h after Part 1, same time slot.
     - **Cross-promo:** Pin Part 2 in Part 1's pinned comment within 5 min of publish. Story-share Part 1 with "Part 2 is live ↓".
@@ -538,13 +682,14 @@ generate_reel_part2_brief:
     - Each of Shots 3, 4, 5 names a DIFFERENT specific real Indian company example with a number attached (₹ amount, multiple, %, headcount).
     - Every "Scene" line names at least one specific real prop, location, or B-roll reference.
     - Every "Design" line gives at least 1 hex colour AND 1 typography choice AND 1 motion note.
+    - **Production Handoff section is mandatory and complete:** Producer's 4 next actions each have an OWNER + DEADLINE; all 7 sub-blocks (next-actions, pre-prod with continuity-to-Part-1 enforced, shoot kit matching Part 1, shoot day flow, post-prod checklist with grade-matching, deliverables including the DM-trigger asset, approval gate including DM-trigger-asset-live-T-30min check) filled with concrete specifics.
     - All 3 caption drafts complete; each opens with a Part 1 callback that paraphrases Part 1's actual question (not generic).
     - ≥ 3 named Indian companies (already covered if Shots 3/4/5 are filled correctly), ≥ 2 specific numbers, ≥ 1 named framework.
     - All 5 engagement-playbook components filled. All 3 hooks + all 4 CTAs filled.
     - Zero example.com, zero placeholder names, zero motivational filler.
     - Output is the markdown brief content directly — no preamble, no postamble, no JSON, no outer code fence.
   expected_output: |-
-    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), Shot 1 explicitly paraphrasing Part 1's actual question (read from upstream context), Shots 3/4/5 each naming a different real Indian company example with a number, the final shot naming the DM trigger word, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion. Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, merged Production & Distribution block, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
+    A single markdown brief block (heading "## Brief #3:") for the Reel Part 2 (Payoff) topic, ending with "---". Contains: compact header strip, sources, 3 hooks with reasoning, a Story Blueprint with a 3-line dramatic arc + runtime line + ≥6 shot blocks each carrying 8 labelled fields (story beat, camera, scene, design, sticker, voiceover, emotion, transition), Shot 1 explicitly paraphrasing Part 1's actual question (read from upstream context), Shots 3/4/5 each naming a different real Indian company example with a number, the final shot naming the DM trigger word, every voiceover differing from its sticker, every scene naming a real prop/location/B-roll, every design line giving hex+type+motion, a complete Production Handoff section (Producer's 4 next actions with owner+deadline, pre-prod with Part 1 continuity, shoot kit matching Part 1, shoot day flow, post-prod with grade-match QA, deliverables including the DM-trigger asset, approval gate including DM-trigger-live check). Three caption drafts (each opening with a Part 1 callback), tiered hashtags, 4-CTA stack, Distribution block, and a 5-part engagement playbook. ≥ 3 named Indian companies, ≥ 2 specific numbers, ≥ 1 named framework. Zero example.com, zero placeholders.
   agent: senior_creative_director_for_instagram_b2b_content___schema_compliant
   context:
   - validate_and_rank
